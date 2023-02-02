@@ -3,6 +3,7 @@
 #rm -fr *; cmake -GNinja ..; ninja
 #on windows, msys2:
 #cmake -G "MSYS Makefiles" ..; make -j
+#PATH=$PATH:/c/repos/factory-installer/x86-build/libssh/src/ ./app-factory-installer.exe
 
 cmake_minimum_required(VERSION 3.10)
 set (project "factory-installer")
@@ -79,6 +80,7 @@ else()
       MONITOR_HOR_RES=800 
       MONITOR_VER_RES=480
    )
+   
 endif()
 
 ##############################
@@ -87,10 +89,16 @@ target_include_directories(${project} PRIVATE ${INC_DIRS})
 target_link_directories(${project} PRIVATE ${LINK_DIRECTORIES})
 target_link_libraries(${project} PRIVATE ${LIBS})
 target_compile_definitions(${project} PRIVATE ${COMPILE_DEFINITIONS}) 
+target_compile_options(${project} PRIVATE -mwindows) 
+target_link_options(${project} PRIVATE -mwindows) 
+#set_target_properties(${project} PROPERTIES WIN32_EXECUTABLE FALSE)
 
 add_executable("app-${project}" ${SOURCES} main.c)
 target_include_directories("app-${project}" PRIVATE ${INC_DIRS})
 target_link_directories("app-${project}" PRIVATE ${LINK_DIRECTORIES})
 target_link_libraries("app-${project}" PRIVATE ${LIBS})
 target_compile_definitions("app-${project}" PRIVATE ${COMPILE_DEFINITIONS}) 
+target_compile_options("app-${project}" PRIVATE -mwindows) 
+target_link_options("app-${project}" PRIVATE -mwindows)
+#set_target_properties("app-${project}" PROPERTIES WIN32_EXECUTABLE FALSE)
 
