@@ -1,0 +1,6 @@
+[submodule "libssh"]
+	path = libssh
+	url = https://git.libssh.org/projects/libssh.git/
+[submodule "lvgl-libraries"]
+	path = lvgl-libraries
+	url = git@github.com:jambamamba/lvgl-libraries.git

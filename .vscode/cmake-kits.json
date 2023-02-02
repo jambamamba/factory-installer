@@ -1,0 +1,9 @@
+[
+  {
+    "name": "x86-build",
+    "compilers": {
+      "C": "C:/msys64/mingw64/bin/gcc.exe",
+      "CXX": "C:/msys64/mingw64/bin/g++.exe"
+    }
+  }
+]
