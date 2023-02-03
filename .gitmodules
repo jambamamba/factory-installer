@@ -4,3 +4,6 @@
 [submodule "lvgl-libraries"]
 	path = lvgl-libraries
 	url = git@github.com:jambamamba/lvgl-libraries.git
+[submodule "utils"]
+	path = utils
+	url = git@github.com:jambamamba/utils.git

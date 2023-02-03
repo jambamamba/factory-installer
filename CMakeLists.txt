@@ -14,6 +14,7 @@ SET(WITH_EXAMPLES OFF CACHE BOOL "Dont build LibSSH Examples")
 SET(BUILD_STATIC_LIB ON CACHE BOOL "Build static library")
 add_subdirectory(libssh)
 add_subdirectory(lvgl-libraries)
+add_subdirectory(utils)
 
 
 set (SOURCES
