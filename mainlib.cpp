@@ -90,7 +90,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 		return true;
 	};
    ssh_session.Connect(
-	"192.168.4.129", 
+	"192.168.4.131", 
 	22,
 	"oosman",
 	"a",
