@@ -82,6 +82,7 @@ if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
       ${SDL_LIB_DIR}
       ${OPENSSL_LIBRARIES}
       ${ZLIB_ROOT}
+      /mingw64/bin/
       #${CMAKE_SOURCE_DIR}/../lvgl-libraries/build
    )
    set (COMPILE_DEFINITIONS 
