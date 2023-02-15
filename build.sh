@@ -98,6 +98,7 @@ function main(){
             -DUSE_CPYTHON=OFF \
             -G "Ninja" ..
         ninja --verbose
+        ln -sf lib/libssh.so.4.9.0 .
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build
