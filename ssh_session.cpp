@@ -154,17 +154,14 @@ bool SshSession::Connect(const std::string &ip,
                          const std::string &password,
                          std::function<bool()> keepWaiting)
 {
-	printf("aaaaaaaaaaaaaa1\n");
    if(!_session)
    {
       return false;
    }
-	printf("aaaaaaaaaaaaaa2\n");
    if(_connected)
    {
       Disconnect();
    }
-   	printf("aaaaaaaaaaaaaa3\n");
 
    ssh_options_set(_session, SSH_OPTIONS_HOST, ip.c_str());
 
@@ -172,16 +169,13 @@ bool SshSession::Connect(const std::string &ip,
    ssh_options_set(_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
    ssh_options_set(_session, SSH_OPTIONS_PORT, &port);
    ssh_set_blocking(_session, false);
-	printf("aaaaaaaaaaaaaa4\n");
 
    if(!WaitLoop([this](){
          return ssh_connect(_session);
       }, SSH_OK, keepWaiting))
    {
-	   printf("aaaaaaaaaaaaaa5.1\n");
       return false;
    }
-	printf("aaaaaaaaaaaaaa6\n");
 
    if(!WaitLoop([this](){
                 return VerifyKnownHost(_session, UserMessageProc);
@@ -192,7 +186,6 @@ bool SshSession::Connect(const std::string &ip,
                       (std::string("Failed to verify host. Error: ")+std::string((ssh_get_error(_session)))).c_str());
       return false;
    }
-	printf("aaaaaaaaaaaaaa7\n");
 
    if(!WaitLoop([this,username,password](){
       return ssh_userauth_password(_session,
@@ -210,11 +203,9 @@ bool SshSession::Connect(const std::string &ip,
                    std::string(ssh_get_error(_session))).c_str());
      return false;
    }
-	printf("aaaaaaaaaaaaaa8\n");
 
    ssh_set_blocking(_session, true);
    _connected = true;
-	printf("aaaaaaaaaaaaaa9\n");
    return true;
 }
 

@@ -74,13 +74,13 @@ static void eventLoop(int loop_count)
 
 extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 {
-//  _fp = fopen("log.txt", "wt");
+ _fp = fopen("log.txt", "wt");
   fprintf(_fp, "starting factory-installer\n");
   init_rendering_engine_sdl(keypressEvent);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
   addTextArea();
-  
+
    //oosman@192.168.4.127
    SshSession ssh_session([](const std::string &title, const std::string &message){
 	fprintf(_fp, "%s:%s\n", title.c_str(), message.c_str());
@@ -89,15 +89,15 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 		eventLoop(1);
 		return true;
 	};
-   ssh_session.Connect(
-	"192.168.4.131", 
+  ssh_session.Connect(
+	"192.168.4.142", 
 	22,
 	"oosman",
 	"a",
   keep_waiting);
 	fprintf(_fp, "connected\n");
 
-  std::string cmd("ls -alh / > /tmp/foobar");
+  std::string cmd("ls -alh . > /tmp/foobar");
   ssh_session.ExecuteRemoteCommand(cmd, keep_waiting, [](const char *buffer, int nbytes){
     if(nbytes > 0){
   	  fprintf(_fp, "%s\n", buffer);
@@ -105,6 +105,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
     return true;
     }
   );
+#if 0 
 
   ScpSession scp_session(ssh_session.GetSession());
   scp_session.ReadRemoteFile("/tmp/foobar", keep_waiting, [](const char *buffer, int nbytes){
@@ -124,7 +125,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
     return bytes_read;
     }
   );
-
+#endif
 	eventLoop(-1);
 	fclose(_fp);
   return 0;

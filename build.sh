@@ -103,8 +103,10 @@ function main(){
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build
         pushd msys-build
-        cmake -G "MSYS Makefiles" ..; make -j
-        make -j
+        cmake \
+            -DUSE_CPYTHON=OFF \
+            -G "MSYS Makefiles" ..
+        VERBOSE=1 make -j
         popd
     fi
 }
