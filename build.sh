@@ -107,6 +107,7 @@ function main(){
             -DUSE_CPYTHON=OFF \
             -G "MSYS Makefiles" ..
         VERBOSE=1 make -j
+        ln -sf libssh/src/libssh.dll .
         popd
     fi
 }
