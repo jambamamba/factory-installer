@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=/usr/local/lib
+includedir=/usr/local/include
+
+Name: libssh
+Description: The SSH Library
+Version: 0.10.90
+Libs: -L${libdir} -lssh
+Cflags: -I${includedir}

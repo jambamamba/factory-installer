@@ -1,0 +1,1238 @@
+The system is: Linux - 5.15.0-56-generic - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/clang 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is Clang, found in "/home/oosman/repos/factory-installer/build/CMakeFiles/3.25.0-rc3/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/bin/clang++ 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is Clang, found in "/home/oosman/repos/factory-installer/build/CMakeFiles/3.25.0-rc3/CompilerIdCXX/a.out"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7OFQ9F
+
+Run Build Command(s):/usr/bin/ninja cmTC_7c42b && [1/2] Building C object CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o
+clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Candidate multilib: .;@m64
+Candidate multilib: 32;@m32
+Candidate multilib: x32;@mx32
+Selected multilib: .;@m64
+ (in-process)
+ "/usr/bin/clang-13" -cc1 -triple x86_64-unknown-linux-gnu -emit-obj -mrelax-all --mrelax-relocations -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=all -fmath-errno -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu x86-64 -tune-cpu generic -debugger-tuning=gdb -v -fcoverage-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7OFQ9F -resource-dir /usr/lib/clang/13.0.0 -dependency-file CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o -sys-header-deps -internal-isystem /usr/lib/clang/13.0.0/include -internal-isystem /usr/local/include -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdebug-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7OFQ9F -ferror-limit 19 -fgnuc-version=4.2.1 -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o -x c /usr/share/cmake-3.25/Modules/CMakeCCompilerABI.c
+clang -cc1 version 13.0.0 based upon LLVM 13.0.0 default target x86_64-unknown-linux-gnu
+ignoring nonexistent directory "/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"
+ignoring nonexistent directory "/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/clang/13.0.0/include
+ /usr/local/include
+ /usr/include/x86_64-linux-gnu
+ /usr/include
+End of search list.
+[2/2] Linking C executable cmTC_7c42b
+clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Candidate multilib: .;@m64
+Candidate multilib: 32;@m32
+Candidate multilib: x32;@mx32
+Selected multilib: .;@m64
+ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_7c42b /lib/x86_64-linux-gnu/crt1.o /lib/x86_64-linux-gnu/crti.o /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9 -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64 -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib64 -L/usr/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o /lib/x86_64-linux-gnu/crtn.o
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/usr/lib/clang/13.0.0/include]
+    add: [/usr/local/include]
+    add: [/usr/include/x86_64-linux-gnu]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/usr/lib/clang/13.0.0/include] ==> [/usr/lib/clang/13.0.0/include]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/usr/lib/clang/13.0.0/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.lld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7OFQ9F]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/ninja cmTC_7c42b && [1/2] Building C object CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o]
+  ignore line: [clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)]
+  ignore line: [Target: x86_64-unknown-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /usr/bin]
+  ignore line: [Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Candidate multilib: 32]
+  ignore line: [@m32]
+  ignore line: [Candidate multilib: x32]
+  ignore line: [@mx32]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  ignore line: [ (in-process)]
+  ignore line: [ "/usr/bin/clang-13" -cc1 -triple x86_64-unknown-linux-gnu -emit-obj -mrelax-all --mrelax-relocations -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=all -fmath-errno -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu x86-64 -tune-cpu generic -debugger-tuning=gdb -v -fcoverage-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7OFQ9F -resource-dir /usr/lib/clang/13.0.0 -dependency-file CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o -sys-header-deps -internal-isystem /usr/lib/clang/13.0.0/include -internal-isystem /usr/local/include -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdebug-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7OFQ9F -ferror-limit 19 -fgnuc-version=4.2.1 -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o -x c /usr/share/cmake-3.25/Modules/CMakeCCompilerABI.c]
+  ignore line: [clang -cc1 version 13.0.0 based upon LLVM 13.0.0 default target x86_64-unknown-linux-gnu]
+  ignore line: [ignoring nonexistent directory "/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"]
+  ignore line: [ignoring nonexistent directory "/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /usr/lib/clang/13.0.0/include]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /usr/include/x86_64-linux-gnu]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking C executable cmTC_7c42b]
+  ignore line: [clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)]
+  ignore line: [Target: x86_64-unknown-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /usr/bin]
+  ignore line: [Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Candidate multilib: 32]
+  ignore line: [@m32]
+  ignore line: [Candidate multilib: x32]
+  ignore line: [@mx32]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  link line: [ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_7c42b /lib/x86_64-linux-gnu/crt1.o /lib/x86_64-linux-gnu/crti.o /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9 -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64 -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib64 -L/usr/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o /lib/x86_64-linux-gnu/crtn.o]
+    arg [/usr/bin/ld] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_7c42b] ==> ignore
+    arg [/lib/x86_64-linux-gnu/crt1.o] ==> obj [/lib/x86_64-linux-gnu/crt1.o]
+    arg [/lib/x86_64-linux-gnu/crti.o] ==> obj [/lib/x86_64-linux-gnu/crti.o]
+    arg [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o] ==> obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o]
+    arg [-L/usr/bin/../lib/gcc/x86_64-linux-gnu/9] ==> dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+    arg [-L/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64] ==> dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/usr/bin/../lib] ==> dir [/usr/bin/../lib]
+    arg [-L/lib] ==> dir [/lib]
+    arg [-L/usr/lib] ==> dir [/usr/lib]
+    arg [CMakeFiles/cmTC_7c42b.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o] ==> obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o]
+    arg [/lib/x86_64-linux-gnu/crtn.o] ==> obj [/lib/x86_64-linux-gnu/crtn.o]
+  collapse obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/crtbegin.o]
+  collapse obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/crtend.o]
+  collapse library dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9] ==> [/usr/lib/gcc/x86_64-linux-gnu/9]
+  collapse library dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64] ==> [/usr/lib64]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/usr/bin/../lib] ==> [/usr/lib]
+  collapse library dir [/lib] ==> [/lib]
+  collapse library dir [/usr/lib] ==> [/usr/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit objs: [/lib/x86_64-linux-gnu/crt1.o;/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtbegin.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtend.o;/lib/x86_64-linux-gnu/crtn.o]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib64;/lib/x86_64-linux-gnu;/lib64;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib]
+  implicit fwks: []
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s2xzsJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_1b0a1 && [1/2] Building CXX object CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o
+clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Candidate multilib: .;@m64
+Candidate multilib: 32;@m32
+Candidate multilib: x32;@mx32
+Selected multilib: .;@m64
+ (in-process)
+ "/usr/bin/clang-13" -cc1 -triple x86_64-unknown-linux-gnu -emit-obj -mrelax-all --mrelax-relocations -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model static -mframe-pointer=all -fmath-errno -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu x86-64 -tune-cpu generic -debugger-tuning=gdb -v -fcoverage-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s2xzsJ -resource-dir /usr/lib/clang/13.0.0 -dependency-file CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9 -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/x86_64-linux-gnu/c++/9 -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward -internal-isystem /usr/lib/clang/13.0.0/include -internal-isystem /usr/local/include -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdeprecated-macro -fdebug-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s2xzsJ -ferror-limit 19 -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o -x c++ /usr/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp
+clang -cc1 version 13.0.0 based upon LLVM 13.0.0 default target x86_64-unknown-linux-gnu
+ignoring nonexistent directory "/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"
+ignoring nonexistent directory "/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9
+ /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/x86_64-linux-gnu/c++/9
+ /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward
+ /usr/lib/clang/13.0.0/include
+ /usr/local/include
+ /usr/include/x86_64-linux-gnu
+ /usr/include
+End of search list.
+[2/2] Linking CXX executable cmTC_1b0a1
+clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9
+Candidate multilib: .;@m64
+Candidate multilib: 32;@m32
+Candidate multilib: x32;@mx32
+Selected multilib: .;@m64
+ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_1b0a1 /lib/x86_64-linux-gnu/crt1.o /lib/x86_64-linux-gnu/crti.o /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9 -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64 -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib64 -L/usr/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o /lib/x86_64-linux-gnu/crtn.o
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9]
+    add: [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/x86_64-linux-gnu/c++/9]
+    add: [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward]
+    add: [/usr/lib/clang/13.0.0/include]
+    add: [/usr/local/include]
+    add: [/usr/include/x86_64-linux-gnu]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9] ==> [/usr/include/c++/9]
+  collapse include dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/x86_64-linux-gnu/c++/9] ==> [/usr/include/x86_64-linux-gnu/c++/9]
+  collapse include dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward] ==> [/usr/include/c++/9/backward]
+  collapse include dir [/usr/lib/clang/13.0.0/include] ==> [/usr/lib/clang/13.0.0/include]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/usr/include/c++/9;/usr/include/x86_64-linux-gnu/c++/9;/usr/include/c++/9/backward;/usr/lib/clang/13.0.0/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.lld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s2xzsJ]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/ninja cmTC_1b0a1 && [1/2] Building CXX object CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)]
+  ignore line: [Target: x86_64-unknown-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /usr/bin]
+  ignore line: [Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Candidate multilib: 32]
+  ignore line: [@m32]
+  ignore line: [Candidate multilib: x32]
+  ignore line: [@mx32]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  ignore line: [ (in-process)]
+  ignore line: [ "/usr/bin/clang-13" -cc1 -triple x86_64-unknown-linux-gnu -emit-obj -mrelax-all --mrelax-relocations -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model static -mframe-pointer=all -fmath-errno -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu x86-64 -tune-cpu generic -debugger-tuning=gdb -v -fcoverage-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s2xzsJ -resource-dir /usr/lib/clang/13.0.0 -dependency-file CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9 -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/x86_64-linux-gnu/c++/9 -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward -internal-isystem /usr/lib/clang/13.0.0/include -internal-isystem /usr/local/include -internal-isystem /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdeprecated-macro -fdebug-compilation-dir=/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s2xzsJ -ferror-limit 19 -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o -x c++ /usr/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [clang -cc1 version 13.0.0 based upon LLVM 13.0.0 default target x86_64-unknown-linux-gnu]
+  ignore line: [ignoring nonexistent directory "/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"]
+  ignore line: [ignoring nonexistent directory "/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9]
+  ignore line: [ /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/x86_64-linux-gnu/c++/9]
+  ignore line: [ /usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward]
+  ignore line: [ /usr/lib/clang/13.0.0/include]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /usr/include/x86_64-linux-gnu]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking CXX executable cmTC_1b0a1]
+  ignore line: [clang version 13.0.0 (https://github.com/llvm/llvm-project/ 24c8eaec9467b2aaf70b0db33a4e4dd415139a50)]
+  ignore line: [Target: x86_64-unknown-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /usr/bin]
+  ignore line: [Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Selected GCC installation: /usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Candidate multilib: 32]
+  ignore line: [@m32]
+  ignore line: [Candidate multilib: x32]
+  ignore line: [@mx32]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  link line: [ "/usr/bin/ld" -z relro --hash-style=gnu --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_1b0a1 /lib/x86_64-linux-gnu/crt1.o /lib/x86_64-linux-gnu/crti.o /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9 -L/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64 -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib64 -L/usr/bin/../lib -L/lib -L/usr/lib CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o /lib/x86_64-linux-gnu/crtn.o]
+    arg [/usr/bin/ld] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_1b0a1] ==> ignore
+    arg [/lib/x86_64-linux-gnu/crt1.o] ==> obj [/lib/x86_64-linux-gnu/crt1.o]
+    arg [/lib/x86_64-linux-gnu/crti.o] ==> obj [/lib/x86_64-linux-gnu/crti.o]
+    arg [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o] ==> obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o]
+    arg [-L/usr/bin/../lib/gcc/x86_64-linux-gnu/9] ==> dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9]
+    arg [-L/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64] ==> dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/usr/bin/../lib] ==> dir [/usr/bin/../lib]
+    arg [-L/lib] ==> dir [/lib]
+    arg [-L/usr/lib] ==> dir [/usr/lib]
+    arg [CMakeFiles/cmTC_1b0a1.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o] ==> obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o]
+    arg [/lib/x86_64-linux-gnu/crtn.o] ==> obj [/lib/x86_64-linux-gnu/crtn.o]
+  collapse obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtbegin.o] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/crtbegin.o]
+  collapse obj [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/crtend.o] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/crtend.o]
+  collapse library dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9] ==> [/usr/lib/gcc/x86_64-linux-gnu/9]
+  collapse library dir [/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../lib64] ==> [/usr/lib64]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/usr/bin/../lib] ==> [/usr/lib]
+  collapse library dir [/lib] ==> [/lib]
+  collapse library dir [/usr/lib] ==> [/usr/lib]
+  implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+  implicit objs: [/lib/x86_64-linux-gnu/crt1.o;/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtbegin.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtend.o;/lib/x86_64-linux-gnu/crtn.o]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib64;/lib/x86_64-linux-gnu;/lib64;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib]
+  implicit fwks: []
+
+
+Performing C SOURCE FILE Test REQUIRED_FLAGS_WERROR succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-9qicYF
+
+Run Build Command(s):/usr/bin/ninja cmTC_3e2f8 && [1/2] Building C object CMakeFiles/cmTC_3e2f8.dir/src.c.o
+[2/2] Linking C executable cmTC_3e2f8
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_STD_GNU99_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-Jmf3DF
+
+Run Build Command(s):/usr/bin/ninja cmTC_4f74d && [1/2] Building C object CMakeFiles/cmTC_4f74d.dir/src.c.o
+[2/2] Linking C executable cmTC_4f74d
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WPEDANTIC_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-STAOAF
+
+Run Build Command(s):/usr/bin/ninja cmTC_491fb && [1/2] Building C object CMakeFiles/cmTC_491fb.dir/src.c.o
+[2/2] Linking C executable cmTC_491fb
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WALL_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-HfQf4H
+
+Run Build Command(s):/usr/bin/ninja cmTC_17558 && [1/2] Building C object CMakeFiles/cmTC_17558.dir/src.c.o
+[2/2] Linking C executable cmTC_17558
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WSHADOW_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-NsDZ6I
+
+Run Build Command(s):/usr/bin/ninja cmTC_41a2d && [1/2] Building C object CMakeFiles/cmTC_41a2d.dir/src.c.o
+[2/2] Linking C executable cmTC_41a2d
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WMISSING_PROTOTYPES_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-WlrbcI
+
+Run Build Command(s):/usr/bin/ninja cmTC_73bf2 && [1/2] Building C object CMakeFiles/cmTC_73bf2.dir/src.c.o
+[2/2] Linking C executable cmTC_73bf2
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WCAST_ALIGN_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-YINXWG
+
+Run Build Command(s):/usr/bin/ninja cmTC_25bb1 && [1/2] Building C object CMakeFiles/cmTC_25bb1.dir/src.c.o
+[2/2] Linking C executable cmTC_25bb1
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_ADDRESS_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-jVNN2H
+
+Run Build Command(s):/usr/bin/ninja cmTC_d6e9d && [1/2] Building C object CMakeFiles/cmTC_d6e9d.dir/src.c.o
+[2/2] Linking C executable cmTC_d6e9d
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WSTRICT_PROTOTYPES_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-Vmg0nG
+
+Run Build Command(s):/usr/bin/ninja cmTC_8e543 && [1/2] Building C object CMakeFiles/cmTC_8e543.dir/src.c.o
+[2/2] Linking C executable cmTC_8e543
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_STRICT_PROTOTYPES_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-LqqlvF
+
+Run Build Command(s):/usr/bin/ninja cmTC_90f65 && [1/2] Building C object CMakeFiles/cmTC_90f65.dir/src.c.o
+[2/2] Linking C executable cmTC_90f65
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WWRITE_STRINGS_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-PoKwMF
+
+Run Build Command(s):/usr/bin/ninja cmTC_53845 && [1/2] Building C object CMakeFiles/cmTC_53845.dir/src.c.o
+[2/2] Linking C executable cmTC_53845
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_WRITE_STRINGS_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-g3dFcJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_9b6bb && [1/2] Building C object CMakeFiles/cmTC_9b6bb.dir/src.c.o
+[2/2] Linking C executable cmTC_9b6bb
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_IMPLICIT_FUNCTION_DECLARATION_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-Cj4cIG
+
+Run Build Command(s):/usr/bin/ninja cmTC_b8058 && [1/2] Building C object CMakeFiles/cmTC_b8058.dir/src.c.o
+[2/2] Linking C executable cmTC_b8058
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WPOINTER_ARITH_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-Gfh4PH
+
+Run Build Command(s):/usr/bin/ninja cmTC_abd03 && [1/2] Building C object CMakeFiles/cmTC_abd03.dir/src.c.o
+[2/2] Linking C executable cmTC_abd03
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_POINTER_ARITH_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-lgAyXF
+
+Run Build Command(s):/usr/bin/ninja cmTC_00057 && [1/2] Building C object CMakeFiles/cmTC_00057.dir/src.c.o
+[2/2] Linking C executable cmTC_00057
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WDECLARATION_AFTER_STATEMENT_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-IC51ZH
+
+Run Build Command(s):/usr/bin/ninja cmTC_8c17f && [1/2] Building C object CMakeFiles/cmTC_8c17f.dir/src.c.o
+[2/2] Linking C executable cmTC_8c17f
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_DECLARATION_AFTER_STATEMENT_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-qTlUmG
+
+Run Build Command(s):/usr/bin/ninja cmTC_4f7e3 && [1/2] Building C object CMakeFiles/cmTC_4f7e3.dir/src.c.o
+[2/2] Linking C executable cmTC_4f7e3
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WRETURN_TYPE_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-499fBH
+
+Run Build Command(s):/usr/bin/ninja cmTC_1ff0d && [1/2] Building C object CMakeFiles/cmTC_1ff0d.dir/src.c.o
+[2/2] Linking C executable cmTC_1ff0d
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_RETURN_TYPE_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-n9NWSI
+
+Run Build Command(s):/usr/bin/ninja cmTC_164e5 && [1/2] Building C object CMakeFiles/cmTC_164e5.dir/src.c.o
+[2/2] Linking C executable cmTC_164e5
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WUNINITIALIZED_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-iIUX5G
+
+Run Build Command(s):/usr/bin/ninja cmTC_ac556 && [1/2] Building C object CMakeFiles/cmTC_ac556.dir/src.c.o
+[2/2] Linking C executable cmTC_ac556
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_UNINITIALIZED_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-kiSoGJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_6b800 && [1/2] Building C object CMakeFiles/cmTC_6b800.dir/src.c.o
+[2/2] Linking C executable cmTC_6b800
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WIMPLICIT_FALLTHROUGH_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-A2tioI
+
+Run Build Command(s):/usr/bin/ninja cmTC_bfdce && [1/2] Building C object CMakeFiles/cmTC_bfdce.dir/src.c.o
+[2/2] Linking C executable cmTC_bfdce
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_STRICT_OVERFLOW_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-OIQm9I
+
+Run Build Command(s):/usr/bin/ninja cmTC_3e798 && [1/2] Building C object CMakeFiles/cmTC_3e798.dir/src.c.o
+[2/2] Linking C executable cmTC_3e798
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WSTRICT_OVERFLOW_2_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-CBLBAH
+
+Run Build Command(s):/usr/bin/ninja cmTC_2130b && [1/2] Building C object CMakeFiles/cmTC_2130b.dir/src.c.o
+[2/2] Linking C executable cmTC_2130b
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WNO_FORMAT_ZERO_LENGTH_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-aYcFcH
+
+Run Build Command(s):/usr/bin/ninja cmTC_5d3bd && [1/2] Building C object CMakeFiles/cmTC_5d3bd.dir/src.c.o
+[2/2] Linking C executable cmTC_5d3bd
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WMISSING_FIELD_INITIALIZERS_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-0omK8G
+
+Run Build Command(s):/usr/bin/ninja cmTC_e2013 && [1/2] Building C object CMakeFiles/cmTC_e2013.dir/src.c.o
+[2/2] Linking C executable cmTC_e2013
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WSIGN_COMPARE_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-f28ZyI
+
+Run Build Command(s):/usr/bin/ninja cmTC_08b50 && [1/2] Building C object CMakeFiles/cmTC_08b50.dir/src.c.o
+[2/2] Linking C executable cmTC_08b50
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test REQUIRED_FLAGS_WFORMAT succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-gYQJqI
+
+Run Build Command(s):/usr/bin/ninja cmTC_5d385 && [1/2] Building C object CMakeFiles/cmTC_5d385.dir/src.c.o
+[2/2] Linking C executable cmTC_5d385
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WFORMAT_SECURITY_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-8xsxUH
+
+Run Build Command(s):/usr/bin/ninja cmTC_f12c8 && [1/2] Building C object CMakeFiles/cmTC_f12c8.dir/src.c.o
+[2/2] Linking C executable cmTC_f12c8
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WERROR_FORMAT_SECURITY_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-IDNQmH
+
+Run Build Command(s):/usr/bin/ninja cmTC_029b6 && [1/2] Building C object CMakeFiles/cmTC_029b6.dir/src.c.o
+[2/2] Linking C executable cmTC_029b6
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_WNO_GNU_ZERO_VARIADIC_MACRO_ARGUMENTS_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ma75rI
+
+Run Build Command(s):/usr/bin/ninja cmTC_7cdeb && [1/2] Building C object CMakeFiles/cmTC_7cdeb.dir/src.c.o
+[2/2] Linking C executable cmTC_7cdeb
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_FNO_COMMON_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-uylLIJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_21255 && [1/2] Building C object CMakeFiles/cmTC_21255.dir/src.c.o
+[2/2] Linking C executable cmTC_21255
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test WITH_STACK_PROTECTOR_STRONG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-j1CsMJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_c5139 && [1/2] Building C object CMakeFiles/cmTC_c5139.dir/src.c.o
+[2/2] Linking C executable cmTC_c5139
+
+
+Source file was:
+int main(int argc, char **argv) { char buffer[256]; return buffer[argc]=0;}
+
+Performing C SOURCE FILE Test WITH_STACK_CLASH_PROTECTION succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-crk4bG
+
+Run Build Command(s):/usr/bin/ninja cmTC_5a64d && [1/2] Building C object CMakeFiles/cmTC_5a64d.dir/src.c.o
+[2/2] Linking C executable cmTC_5a64d
+
+
+Source file was:
+int main(int argc, char **argv) { char buffer[256]; return buffer[argc]=0;}
+
+Performing C SOURCE FILE Test WITH_WNO_DEPRECATED_DECLARATIONS_FLAG succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-6YZOJI
+
+Run Build Command(s):/usr/bin/ninja cmTC_5aaed && [1/2] Building C object CMakeFiles/cmTC_5aaed.dir/src.c.o
+[2/2] Linking C executable cmTC_5aaed
+
+
+Source file was:
+int main(void) { return 0; }
+
+Determining if the include file argp.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-LxJGWH
+
+Run Build Command(s):/usr/bin/ninja cmTC_3c7a4 && [1/2] Building C object CMakeFiles/cmTC_3c7a4.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_3c7a4
+
+
+
+Determining if the include file pty.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7jG6cI
+
+Run Build Command(s):/usr/bin/ninja cmTC_fc802 && [1/2] Building C object CMakeFiles/cmTC_fc802.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_fc802
+
+
+
+Determining if the include file utmp.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-B0DhhH
+
+Run Build Command(s):/usr/bin/ninja cmTC_17c55 && [1/2] Building C object CMakeFiles/cmTC_17c55.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_17c55
+
+
+
+Determining if the include file termios.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-2mgNzH
+
+Run Build Command(s):/usr/bin/ninja cmTC_c2d4c && [1/2] Building C object CMakeFiles/cmTC_c2d4c.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_c2d4c
+
+
+
+Determining if the include file unistd.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-zuCXEG
+
+Run Build Command(s):/usr/bin/ninja cmTC_3c6f0 && [1/2] Building C object CMakeFiles/cmTC_3c6f0.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_3c6f0
+
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-l8QTyH
+
+Run Build Command(s):/usr/bin/ninja cmTC_80868 && [1/2] Building C object CMakeFiles/cmTC_80868.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_80868
+
+
+
+Determining if the include file sys/time.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-6rZU4I
+
+Run Build Command(s):/usr/bin/ninja cmTC_4622a && [1/2] Building C object CMakeFiles/cmTC_4622a.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_4622a
+
+
+
+Determining if the include file sys/param.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-wy7NzG
+
+Run Build Command(s):/usr/bin/ninja cmTC_f68e9 && [1/2] Building C object CMakeFiles/cmTC_f68e9.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_f68e9
+
+
+
+Determining if the include file arpa/inet.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-jarTbH
+
+Run Build Command(s):/usr/bin/ninja cmTC_5344b && [1/2] Building C object CMakeFiles/cmTC_5344b.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_5344b
+
+
+
+Determining if the include file byteswap.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-RAIJWF
+
+Run Build Command(s):/usr/bin/ninja cmTC_3bfb3 && [1/2] Building C object CMakeFiles/cmTC_3bfb3.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_3bfb3
+
+
+
+Determining if the include file glob.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-IXoinJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_8533f && [1/2] Building C object CMakeFiles/cmTC_8533f.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_8533f
+
+
+
+Determining if the include file openssl/des.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-QjqG7F
+
+Run Build Command(s):/usr/bin/ninja cmTC_6cf00 && [1/2] Building C object CMakeFiles/cmTC_6cf00.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_6cf00
+
+
+
+Determining if the include file openssl/aes.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-s4dYbJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_6bf68 && [1/2] Building C object CMakeFiles/cmTC_6bf68.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_6bf68
+
+
+
+Determining if the include file openssl/ecdh.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-bUOkBH
+
+Run Build Command(s):/usr/bin/ninja cmTC_dcfa4 && [1/2] Building C object CMakeFiles/cmTC_dcfa4.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_dcfa4
+
+
+
+Determining if the include file openssl/ec.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-kinkDI
+
+Run Build Command(s):/usr/bin/ninja cmTC_0ca46 && [1/2] Building C object CMakeFiles/cmTC_0ca46.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_0ca46
+
+
+
+Determining if the include file openssl/ecdsa.h exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-WFOIqJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_26263 && [1/2] Building C object CMakeFiles/cmTC_26263.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_26263
+
+
+
+Determining if the function FIPS_mode exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-miyNLI
+
+Run Build Command(s):/usr/bin/ninja cmTC_26120 && [1/2] Building C object CMakeFiles/cmTC_26120.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_26120
+
+
+
+Determining if the function RAND_priv_bytes exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-kTt9hH
+
+Run Build Command(s):/usr/bin/ninja cmTC_34b40 && [1/2] Building C object CMakeFiles/cmTC_34b40.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_34b40
+
+
+
+Determining if the function EVP_chacha20 exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-vKQ36E
+
+Run Build Command(s):/usr/bin/ninja cmTC_c7e92 && [1/2] Building C object CMakeFiles/cmTC_c7e92.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_c7e92
+
+
+
+Determining if the function isblank exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-LKZhPI
+
+Run Build Command(s):/usr/bin/ninja cmTC_79cae && [1/2] Building C object CMakeFiles/cmTC_79cae.dir/CheckFunctionExists.c.o
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-LKZhPI/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'isblank' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS isblank
+                              ^
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-LKZhPI/CheckFunctionExists.c:7:3: note: 'isblank' is a builtin with type 'int (int)'
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS isblank
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_79cae
+
+
+
+Determining if the function strncpy exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-o3dC9H
+
+Run Build Command(s):/usr/bin/ninja cmTC_41ab3 && [1/2] Building C object CMakeFiles/cmTC_41ab3.dir/CheckFunctionExists.c.o
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-o3dC9H/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'strncpy' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS strncpy
+                              ^
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-o3dC9H/CheckFunctionExists.c:7:3: note: 'strncpy' is a builtin with type 'char *(char *, const char *, unsigned long)'
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS strncpy
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_41ab3
+
+
+
+Determining if the function strndup exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ZC5J3F
+
+Run Build Command(s):/usr/bin/ninja cmTC_522f7 && [1/2] Building C object CMakeFiles/cmTC_522f7.dir/CheckFunctionExists.c.o
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ZC5J3F/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'strndup' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS strndup
+                              ^
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ZC5J3F/CheckFunctionExists.c:7:3: note: 'strndup' is a builtin with type 'char *(const char *, unsigned long)'
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS strndup
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_522f7
+
+
+
+Determining if the function strtoull exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ChK5AJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_019de && [1/2] Building C object CMakeFiles/cmTC_019de.dir/CheckFunctionExists.c.o
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ChK5AJ/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'strtoull' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS strtoull
+                              ^
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-ChK5AJ/CheckFunctionExists.c:7:3: note: 'strtoull' is a builtin with type 'unsigned long long (const char *, char **, int)'
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS strtoull
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_019de
+
+
+
+Determining if the function explicit_bzero exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-f92K5G
+
+Run Build Command(s):/usr/bin/ninja cmTC_a0f80 && [1/2] Building C object CMakeFiles/cmTC_a0f80.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_a0f80
+
+
+
+Performing C SOURCE FILE Test HAVE_GLOB_GL_FLAGS_MEMBER succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-cvxb2F
+
+Run Build Command(s):/usr/bin/ninja cmTC_8e342 && [1/2] Building C object CMakeFiles/cmTC_8e342.dir/src.c.o
+[2/2] Linking C executable cmTC_8e342
+
+
+Source file was:
+
+#include <glob.h>
+
+int main()
+{
+  (void)sizeof(((glob_t *)0)->gl_flags);
+  return 0;
+}
+
+
+Determining if the function glob exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-9kmSEI
+
+Run Build Command(s):/usr/bin/ninja cmTC_95c18 && [1/2] Building C object CMakeFiles/cmTC_95c18.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_95c18
+
+
+
+Determining if the function vsnprintf exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-akqguJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_280c0 && [1/2] Building C object CMakeFiles/cmTC_280c0.dir/CheckFunctionExists.c.o
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-akqguJ/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'vsnprintf' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS vsnprintf
+                              ^
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-akqguJ/CheckFunctionExists.c:7:3: note: 'vsnprintf' is a builtin with type 'int (char *, unsigned long, const char *, struct __va_list_tag *)'
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS vsnprintf
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_280c0
+
+
+
+Determining if the function snprintf exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-UhsJFG
+
+Run Build Command(s):/usr/bin/ninja cmTC_ae983 && [1/2] Building C object CMakeFiles/cmTC_ae983.dir/CheckFunctionExists.c.o
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-UhsJFG/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'snprintf' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS snprintf
+                              ^
+/home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-UhsJFG/CheckFunctionExists.c:7:3: note: 'snprintf' is a builtin with type 'int (char *, unsigned long, const char *, ...)'
+<command line>:1:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS snprintf
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_ae983
+
+
+
+Determining if the function poll exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-Lux0wH
+
+Run Build Command(s):/usr/bin/ninja cmTC_d2f07 && [1/2] Building C object CMakeFiles/cmTC_d2f07.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_d2f07
+
+
+
+Determining if the function select exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-IVxVPG
+
+Run Build Command(s):/usr/bin/ninja cmTC_9b8a4 && [1/2] Building C object CMakeFiles/cmTC_9b8a4.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_9b8a4
+
+
+
+Determining if the function getaddrinfo exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-6YrkbJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_b965e && [1/2] Building C object CMakeFiles/cmTC_b965e.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_b965e
+
+
+
+Determining if the function clock_gettime exists in the rt passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-8G26RG
+
+Run Build Command(s):/usr/bin/ninja cmTC_d57fd && [1/2] Building C object CMakeFiles/cmTC_d57fd.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_d57fd
+
+
+
+Determining if the function forkpty exists in the util passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-f6o5YI
+
+Run Build Command(s):/usr/bin/ninja cmTC_13afc && [1/2] Building C object CMakeFiles/cmTC_13afc.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_13afc
+
+
+
+Determining if the function cfmakeraw exists passed with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-lFGvZI
+
+Run Build Command(s):/usr/bin/ninja cmTC_6eda9 && [1/2] Building C object CMakeFiles/cmTC_6eda9.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_6eda9
+
+
+
+Performing C SOURCE FILE Test HAVE_GCC_THREAD_LOCAL_STORAGE succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7tZM5H
+
+Run Build Command(s):/usr/bin/ninja cmTC_d091f && [1/2] Building C object CMakeFiles/cmTC_d091f.dir/src.c.o
+[2/2] Linking C executable cmTC_d091f
+
+
+Source file was:
+
+__thread int tls;
+
+int main(void) {
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_CONSTRUCTOR_ATTRIBUTE succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-DVIfkI
+
+Run Build Command(s):/usr/bin/ninja cmTC_2f488 && [1/2] Building C object CMakeFiles/cmTC_2f488.dir/src.c.o
+[2/2] Linking C executable cmTC_2f488
+
+
+Source file was:
+
+void test_constructor_attribute(void) __attribute__ ((constructor));
+
+void test_constructor_attribute(void)
+{
+    return;
+}
+
+int main(void) {
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_DESTRUCTOR_ATTRIBUTE succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-v9SchG
+
+Run Build Command(s):/usr/bin/ninja cmTC_572eb && [1/2] Building C object CMakeFiles/cmTC_572eb.dir/src.c.o
+[2/2] Linking C executable cmTC_572eb
+
+
+Source file was:
+
+void test_destructor_attribute(void) __attribute__ ((destructor));
+
+void test_destructor_attribute(void)
+{
+    return;
+}
+
+int main(void) {
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_FALLTHROUGH_ATTRIBUTE succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-1OTCoI
+
+Run Build Command(s):/usr/bin/ninja cmTC_89b5d && [1/2] Building C object CMakeFiles/cmTC_89b5d.dir/src.c.o
+[2/2] Linking C executable cmTC_89b5d
+
+
+Source file was:
+
+#define FALL_THROUGH __attribute__((fallthrough))
+
+int main(void) {
+    int i = 2;
+
+    switch (i) {
+    case 0:
+        FALL_THROUGH;
+    case 1:
+        break;
+    default:
+        break;
+    }
+
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_WEAK_ATTRIBUTE succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-Gj1QPI
+
+Run Build Command(s):/usr/bin/ninja cmTC_83ca8 && [1/2] Building C object CMakeFiles/cmTC_83ca8.dir/src.c.o
+[2/2] Linking C executable cmTC_83ca8
+
+
+Source file was:
+
+#define WEAK __attribute__((weak))
+
+WEAK int sum(int a, int b)
+{
+    return a + b;
+}
+
+int main(void)
+{
+    int i = sum(2, 2);
+
+    (void)i;
+
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_UNUSED_ATTRIBUTE succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-pxKUpJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_41845 && [1/2] Building C object CMakeFiles/cmTC_41845.dir/src.c.o
+[2/2] Linking C executable cmTC_41845
+
+
+Source file was:
+
+    #define __unused __attribute__((unused))
+
+    static int do_nothing(int i __unused)
+    {
+        return 0;
+    }
+
+    int main(void)
+    {
+        int i;
+
+        i = do_nothing(5);
+        if (i > 5) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+Performing C SOURCE FILE Test HAVE_GCC_VOLATILE_MEMORY_PROTECTION succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-8SHhvJ
+
+Run Build Command(s):/usr/bin/ninja cmTC_8ce70 && [1/2] Building C object CMakeFiles/cmTC_8ce70.dir/src.c.o
+[2/2] Linking C executable cmTC_8ce70
+
+
+Source file was:
+
+#include <string.h>
+
+int main(void)
+{
+    char buf[] = "This is some content";
+
+    memset(buf, '\0', sizeof(buf)); __asm__ volatile("" : : "g"(&buf) : "memory");
+
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_COMPILER__FUNC__ succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-7O3FnF
+
+Run Build Command(s):/usr/bin/ninja cmTC_7149e && [1/2] Building C object CMakeFiles/cmTC_7149e.dir/src.c.o
+[2/2] Linking C executable cmTC_7149e
+
+
+Source file was:
+
+#include <stdio.h>
+int main(void) {
+    printf("%s", __func__);
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_COMPILER__FUNCTION__ succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-AnTmKI
+
+Run Build Command(s):/usr/bin/ninja cmTC_ee06f && [1/2] Building C object CMakeFiles/cmTC_ee06f.dir/src.c.o
+[2/2] Linking C executable cmTC_ee06f
+
+
+Source file was:
+
+#include <stdio.h>
+int main(void) {
+    printf("%s", __FUNCTION__);
+    return 0;
+}
+
+Performing C SOURCE FILE Test HAVE_LD_VERSION_SCRIPT succeeded with the following output:
+Change Dir: /home/oosman/repos/factory-installer/build/CMakeFiles/CMakeScratch/TryCompile-AB75lF
+
+Run Build Command(s):/usr/bin/ninja cmTC_c486b && [1/2] Building C object CMakeFiles/cmTC_c486b.dir/src.c.o
+clang-13: warning: -Wl,--version-script=/home/oosman/repos/factory-installer/build/libssh/conftest.map: 'linker' input unused [-Wunused-command-line-argument]
+[2/2] Linking C executable cmTC_c486b
+
+
+Source file was:
+int main(void) { return 0; }
+

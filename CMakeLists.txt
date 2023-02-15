@@ -66,8 +66,8 @@ set(LINK_DIRECTORIES
    ${CMAKE_BINARY_DIR}/libssh/src
    
 )
-message("@@@@@@@@@@@@@ CMAKE_SYSTEM_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR} @@@@@@@@@@@@@@@@@")
-if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+
+if ((CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") OR (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64"))
    set (INC_DIRS 
       ${INC_DIRS}
       /usr/include/SDL2/
@@ -82,6 +82,7 @@ if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
       ${SDL_LIB_DIR}
       ${OPENSSL_LIBRARIES}
       ${ZLIB_ROOT}
+      /mingw64/bin/
       #${CMAKE_SOURCE_DIR}/../lvgl-libraries/build
    )
    set (COMPILE_DEFINITIONS 
