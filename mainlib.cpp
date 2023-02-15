@@ -1,3 +1,4 @@
+#include <debug_logger.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -11,10 +12,11 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-
 #include "rendering_engine.h"
 #include "ssh_session.h"
 #include "scp_session.h"
+
+LOG_CATEGORY(MAIN, "MAIN")
 
 static lv_obj_t * _label;
 static lv_obj_t * _ta;

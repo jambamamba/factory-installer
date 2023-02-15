@@ -63,7 +63,9 @@ function main(){
     if [ "$target" == "x86" ]; then #host linux, target linux
         mkdir -p x86-build
         pushd x86-build
-        rm -fr *
+        if [ "$clean" == "true" ]; then
+            rm -fr *
+        fi
         cmake -G Ninja ..
         ninja --verbose
         popd
@@ -84,7 +86,9 @@ function main(){
         pushd win64-build
         # ninja --verbose -j1; exit 0
 
-        rm -fr *
+        if [ "$clean" == "true" ]; then
+            rm -fr *
+        fi
         cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../x86_64-w64-mingw32.cmake \
             -DCMAKE_MODULE_PATH=$(pwd)/../cmake-modules \
             -DCMAKE_SKIP_RPATH=TRUE \
@@ -103,6 +107,9 @@ function main(){
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build
         pushd msys-build
+        if [ "$clean" == "true" ]; then
+            rm -fr *
+        fi
         cmake \
             -DUSE_CPYTHON=OFF \
             -G "MSYS Makefiles" ..

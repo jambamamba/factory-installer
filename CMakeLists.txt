@@ -38,6 +38,7 @@ set (INC_DIRS
    target/include/
    ${PROJECT_SOURCE_DIR}
    ${PROJECT_SOURCE_DIR}/.. 
+   ${CMAKE_SOURCE_DIR}/utils
    #${CMAKE_SOURCE_DIR}/extlibs/lvgl/installs/include
    #${CMAKE_SOURCE_DIR}/extlibs/cJSON/installs/include
    #${CMAKE_SOURCE_DIR}/extlibs/cpython/installs/Include
