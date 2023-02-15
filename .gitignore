@@ -1,3 +1,4 @@
 CMakeLists.txt.user
 x86-build/
 compile_commands.json
+win64-build

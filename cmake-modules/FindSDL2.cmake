@@ -1,0 +1,8 @@
+set(SDL_FOUND TRUE)
+set(SDL_ROOT_DIR "/tmp/SDL2-2.26.3/x86_64-w64-mingw32")
+
+set(SDL_LIB_DIR "${SDL_ROOT_DIR}/bin")
+set(SDL_LIBRARIES "${SDL_LIB_DIR}/SDL2.dll")
+set(SDL_INCLUDE_DIR "${SDL_ROOT_DIR}/include")
+set(SDL2_INCLUDE_DIRS "${SDL_INCLUDE_DIR}")
+

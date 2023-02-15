@@ -4,6 +4,8 @@
 #on windows, msys2:
 #cmake -G "MSYS Makefiles" ..; make -j
 #PATH=$PATH:/c/repos/factory-installer/x86-build/libssh/src/ ./app-factory-installer.exe
+#on linux, building for windows:
+#cmake -DCMAKE_TOOLCHAIN_FILE=../x86_64-w64-mingw32.cmake -G Ninja ..
 
 cmake_minimum_required(VERSION 3.10)
 set (project "factory-installer")
@@ -13,6 +15,10 @@ project(${project})
 OPTION(WITH_EXAMPLES "" OFF)
 SET(WITH_EXAMPLES OFF CACHE BOOL "Dont build LibSSH Examples")
 SET(BUILD_STATIC_LIB ON CACHE BOOL "Build static library")
+
+if (MINGW)
+find_package(SDL2 REQUIRED)
+endif()
 add_subdirectory(libssh)
 add_subdirectory(lvgl-libraries)
 add_subdirectory(utils)
@@ -35,6 +41,7 @@ set (INC_DIRS
    #${CMAKE_SOURCE_DIR}/extlibs/lvgl/installs/include
    #${CMAKE_SOURCE_DIR}/extlibs/cJSON/installs/include
    #${CMAKE_SOURCE_DIR}/extlibs/cpython/installs/Include
+   ${CMAKE_BINARY_DIR}//utils/cpython-prefix/include/python3.12/
    ${CMAKE_SOURCE_DIR}/lvgl-libraries/
    ${CMAKE_BINARY_DIR}/libssh/include/
    ${THIRD_PARTY_LIB_DIR}
@@ -60,11 +67,11 @@ set(LINK_DIRECTORIES
    
 )
 
-if (CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
-else()
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
    set (INC_DIRS 
       ${INC_DIRS}
       /usr/include/SDL2/
+      ${SDL_INCLUDE_DIR}
    )
    set (LIBS
       ${LIBS}
@@ -72,6 +79,9 @@ else()
    )
    set(LINK_DIRECTORIES
       ${LINK_DIRECTORIES}
+      ${SDL_LIB_DIR}
+      ${OPENSSL_LIBRARIES}
+      ${ZLIB_ROOT}
       #${CMAKE_SOURCE_DIR}/../lvgl-libraries/build
    )
    set (COMPILE_DEFINITIONS 
@@ -81,7 +91,7 @@ else()
       MONITOR_HOR_RES=800 
       MONITOR_VER_RES=480
    )
-   
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")  
 endif()
 
 ##############################
