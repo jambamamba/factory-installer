@@ -1,10 +1,13 @@
 #include "scp_session.h"
 
+#include <debug_logger.h>
 #include <fcntl.h>
 #include <sstream> 
 #include <string>
 #include <sys/stat.h>
 #include <vector>
+
+LOG_CATEGORY(SSH, "SSH")
 
 namespace {
 
@@ -36,7 +39,7 @@ bool ScpSession::Init(ssh_scp scp)
    int rc = ssh_scp_init(scp);
    if (rc != SSH_OK)
    {
-      fprintf(stderr, "Error initializing scp session: %s\n",
+      LOG(WARNING, SSH, "Error initializing scp session: %s\n",
               ssh_get_error(_ssh));
       ssh_scp_free(scp);
       return rc;
@@ -54,14 +57,14 @@ void ScpSession::DeInit(ssh_scp scp)
 }
 
 int ScpSession::ReadRemoteFile(const std::string &remoteFilePath, 
-                              std::function<bool()> quit,
+                              std::function<bool()> keepWaiting,
                               std::function<ssize_t(char* buffer, int bytes)>writeLocalFile)
 {
    ssh_scp scp = ssh_scp_new
          (_ssh, SSH_SCP_READ, remoteFilePath.c_str());
    if (scp == nullptr)
    {
-      fprintf(stderr, "Error allocating scp session: %s\n",
+      LOG(WARNING, SSH, "Error allocating scp session: %s\n",
               ssh_get_error(_ssh));
       return SSH_ERROR;
    }
@@ -73,7 +76,7 @@ int ScpSession::ReadRemoteFile(const std::string &remoteFilePath,
    int rc = ssh_scp_pull_request(scp);
    if (rc != SSH_SCP_REQUEST_NEWFILE)
    {
-      fprintf(stderr, "Error receiving information about file: %s\n",
+      LOG(WARNING, SSH, "Error receiving information about file: %s\n",
               ssh_get_error(_ssh));
       DeInit(scp);
       return SSH_ERROR;
@@ -81,12 +84,12 @@ int ScpSession::ReadRemoteFile(const std::string &remoteFilePath,
    size_t size = ssh_scp_request_get_size(scp);
    std::string filename(ssh_scp_request_get_filename(scp));
    int mode = ssh_scp_request_get_permissions(scp);
-   printf("Receiving file %s, size %d, permissions 0%o\n",
+   LOG(DEBUG, SSH, "Receiving file %s, size %d, permissions 0%o\n",
           filename.c_str(), size, mode);
    ssh_scp_accept_request(scp);
 
    ssize_t totalWritten = 0;
-   while(totalWritten < size && !quit())
+   while(totalWritten < size && keepWaiting())
    {
       constexpr int MAX_XFER_BUF_SIZE = 1024 * 16;
       char buffer[MAX_XFER_BUF_SIZE];
@@ -94,7 +97,7 @@ int ScpSession::ReadRemoteFile(const std::string &remoteFilePath,
       rc = ssh_scp_read(scp, buffer, sizeof(buffer));
       if (rc == SSH_ERROR)
       {
-         fprintf(stderr, "Error receiving file data: %s\n",
+         LOG(WARNING, SSH, "Error receiving file data: %s\n",
                  ssh_get_error(_ssh));
          DeInit(scp);
          return rc;
@@ -111,7 +114,7 @@ int ScpSession::ReadRemoteFile(const std::string &remoteFilePath,
    rc = ssh_scp_pull_request(scp);
    if (rc != SSH_SCP_REQUEST_EOF)
    {
-      fprintf(stderr, "Unexpected request: %s\n",
+      LOG(WARNING, SSH, "Unexpected request: %s\n",
               ssh_get_error(_ssh));
       DeInit(scp);
       return SSH_ERROR;
@@ -129,7 +132,7 @@ int ScpSession::WriteRemoteFile(const std::string &remoteFilePath,
          (_ssh, SSH_SCP_WRITE | SSH_SCP_RECURSIVE, "/");
    if (scp == nullptr)
    {
-      fprintf(stderr, "Error allocating scp session: %s\n",
+      LOG(WARNING, SSH, "Error allocating scp session: %s\n",
               ssh_get_error(_ssh));
       return SSH_ERROR;
    }
@@ -154,7 +157,7 @@ int ScpSession::WriteRemoteFile(const std::string &remoteFilePath,
       rc = ssh_scp_push_directory(scp, token.c_str(), S_IRWXU);
       if (rc != SSH_OK)
       {
-         fprintf(stderr, "Can't create remote directory: %s\n",
+         LOG(WARNING, SSH, "Can't create remote directory: %s\n",
                  ssh_get_error(_ssh));
          DeInit(scp);
          return false;
@@ -165,7 +168,7 @@ int ScpSession::WriteRemoteFile(const std::string &remoteFilePath,
          (scp, remoteFilePath.c_str(), fileSize, S_IRUSR |  S_IWUSR);
    if (rc != SSH_OK)
    {
-      fprintf(stderr, "Can't open remote file: %s\n",
+      LOG(WARNING, SSH, "Can't open remote file: %s\n",
               ssh_get_error(_ssh));
       DeInit(scp);
       return rc;
@@ -185,7 +188,7 @@ int ScpSession::WriteRemoteFile(const std::string &remoteFilePath,
       rc = ssh_scp_write(scp, buffer, nread);
       if (rc != SSH_OK)
       {
-         printf("Can't write to remote file: %1\n", ssh_get_error(_ssh));
+         LOG(DEBUG, SSH, "Can't write to remote file: %1\n", ssh_get_error(_ssh));
          DeInit(scp);
          return rc;
       }

@@ -1,6 +1,9 @@
 #include "ssh_session.h"
 
+#include <debug_logger.h>
 #include <libssh/callbacks.h>
+
+LOG_CATEGORY(SSH, "SSH")
 
 namespace {
 
@@ -52,9 +55,9 @@ int VerifyKnownHost(ssh_session session,
             /* OK */
             break;
         case SSH_KNOWN_HOSTS_CHANGED:
-//            fprintf(stderr, "Host key for server changed: it is now:\n");
+//            LOG(WARNING, SSH, "Host key for server changed: it is now:\n");
 //            ssh_print_hexa("Public key hash", hash, hlen);
-//            fprintf(stderr, "For security reasons, connection will be stopped\n");
+//            LOG(WARNING, SSH, "For security reasons, connection will be stopped\n");
 //            return -1;
             hexa = ssh_get_hexa(hash, hlen);
             userMessageProc("Host key for server changed",
@@ -65,26 +68,26 @@ int VerifyKnownHost(ssh_session session,
             ssh_clean_pubkey_hash(&hash);
             rc = ssh_session_update_known_hosts(session);
             if (rc < 0) {
-                fprintf(stderr, "Error %s\n", strerror(errno));
+                LOG(WARNING, SSH, "Error %s\n", strerror(errno));
                 return -1;
             }
             break;
         case SSH_KNOWN_HOSTS_OTHER:
-            fprintf(stderr, "The host key for this server was not found but an other"
+            LOG(WARNING, SSH, "The host key for this server was not found but an other"
                     "type of key exists.\n");
-            fprintf(stderr, "An attacker might change the default server key to"
+            LOG(WARNING, SSH, "An attacker might change the default server key to"
                     "confuse your client into thinking the key does not exist\n");
             ssh_clean_pubkey_hash(&hash);
             return -1;
         case SSH_KNOWN_HOSTS_NOT_FOUND:
-            fprintf(stderr, "Could not find known host file.\n");
-            fprintf(stderr, "If you accept the host key here, the file will be"
+            LOG(WARNING, SSH, "Could not find known host file.\n");
+            LOG(WARNING, SSH, "If you accept the host key here, the file will be"
                     "automatically created.\n");
             /* FALL THROUGH to SSH_SERVER_NOT_KNOWN behavior */
         case SSH_KNOWN_HOSTS_UNKNOWN:
             hexa = ssh_get_hexa(hash, hlen);
 //            fprintf(stderr,"The server is unknown. Do you trust the host key?\n");
-//            fprintf(stderr, "Public key hash: %s\n", hexa);
+//            LOG(WARNING, SSH, "Public key hash: %s\n", hexa);
 //            ssh_string_free_char(hexa);
 //            ssh_clean_pubkey_hash(&hash);
 //            p = fgets(buf, sizeof(buf), stdin);
@@ -110,12 +113,12 @@ int VerifyKnownHost(ssh_session session,
 //            }
             rc = ssh_session_update_known_hosts(session);
             if (rc < 0) {
-                fprintf(stderr, "Error %s\n", strerror(errno));
+                LOG(WARNING, SSH, "Error %s\n", strerror(errno));
                 return -1;
             }
             break;
         case SSH_KNOWN_HOSTS_ERROR:
-            fprintf(stderr, "Error %s", ssh_get_error(session));
+            LOG(WARNING, SSH, "Error %s", ssh_get_error(session));
             ssh_clean_pubkey_hash(&hash);
             return -1;
     }
@@ -127,7 +130,7 @@ void SshLoggingCallback(int priority,
                                       const char *buffer,
                                       void *userdata)
 {
-   printf("[SSH] %s:%s\n", function, buffer);
+   LOG(DEBUG, SSH, "%s:%s\n", function, buffer);
 }
 
 }//namespace
@@ -267,14 +270,14 @@ bool SshSession::ExecuteRemoteCommand(const std::string &cmd,
       }
       else
       {
-        printf("[SSH] Recvd: %s\n", buffer);
+        LOG(DEBUG, SSH, "Recvd: %s\n", buffer);
       }
       nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
    }
    if (nbytes < 0 && ssh_get_error_code(_session) != 2/*Remote channel is closed*/)
    {
       char message[256] = {0};
-      snprintf(message, sizeof(message)-1, "[SSH] Read error: %i:%s\n", ssh_get_error_code(_session), ssh_get_error(_session));
+      snprintf(message, sizeof(message)-1, "Read error: %i:%s\n", ssh_get_error_code(_session), ssh_get_error(_session));
 
      if(stdoutfn)
      {
@@ -282,7 +285,7 @@ bool SshSession::ExecuteRemoteCommand(const std::string &cmd,
      }
      else
      {
-      printf("%s\n", message);
+      LOG(DEBUG, SSH, "%s\n", message);
      }
      ssh_channel_close(channel);
      ssh_channel_free(channel);

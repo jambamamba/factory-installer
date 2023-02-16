@@ -9,13 +9,13 @@
             "name": "gcc-10 - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/x86-build/steno-factory-installer",
+            "program": "${workspaceRoot}/msys-build/app-factory-installer",
             // "args": ["single_process=true"],
             "stopAtEntry": false,
             // "environment": [
             //     {
             //         "name":"LD_LIBRARY_PATH",
-            //         "value":"${workspaceRoot}/extlibs/cpython/x86-build/"
+            //         "value":"${workspaceRoot}/extlibs/cpython/msys-build/"
             //     }
             // ],
             "cwd": "${workspaceRoot}",
