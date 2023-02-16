@@ -117,6 +117,15 @@ function main(){
         VERBOSE=1 make -j
         ln -sf libssh/src/libssh.dll .
         popd
+    else
+        echo "Usage: ./builds.h target=<x86|mingw|msys>"
+        echo "Possible targets are x86, mingw, msys. "
+        echo "Use only one target depending on your host machine (where you are building), and target machine (where you will run the compiled code)"
+        echo "  x86:    build machine is x86-linux and target machine is x86-linux"
+        echo "  mingw:  build machine is x86-linux and target machine is x86-windows - you will need to install mingw on linux for this"
+        echo "  msys:   build machine is x86-windows and target machine is x86-windows - you will need to install msys2 on Windows for this"
+        echo "          https://www.msys2.org/wiki/MSYS2-installation/"
+        echo "   "
     fi
 }
 
