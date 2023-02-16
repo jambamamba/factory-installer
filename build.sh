@@ -102,7 +102,13 @@ function main(){
             -DUSE_CPYTHON=OFF \
             -G "Ninja" ..
         ninja --verbose
-        ln -sf lib/libssh.so.4.9.0 .
+        cp -f lib/libssh.so.4.9.0 .
+        cp -f /tmp/zlib-1.2.13/zlib1.dll .
+        cp -f /tmp/openssl-1.1.1t/libcrypto-1_1-x64.dll .
+        cp -f /tmp/openssl-1.1.1t/libssl-1_1-x64.dll .
+        cp -f /tmp/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
+        cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
+        cp -f /usr/x86_64-w64-mingw32/lib/*dll .
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build

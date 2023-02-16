@@ -84,6 +84,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
   addTextBox();
   addTextArea();
 
+  ssh_init();
    //oosman@192.168.4.127
   SshSession ssh_session([](const std::string &title, const std::string &message){
 	LOG(DEBUG, MAIN, "%s:%s\n", title.c_str(), message.c_str());
@@ -92,12 +93,14 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 		eventLoop(1);
 		return true;
 	};
-  ssh_session.Connect(
+  if(!ssh_session.Connect(
     "192.168.4.143", 
     22,
     "oosman",
     "a",
-    keep_waiting);
+    keep_waiting)){
+  	LOG(FATAL, MAIN, "FAILD to Connect\n");
+    }
 	LOG(DEBUG, MAIN, "Connected\n");
 
   std::string cmd("ls -alh . > /tmp/foobar");
@@ -127,13 +130,14 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
     size_t file_size = st.st_size;
     FILE *fp = fopen("c:/Users/oosman/fava", "rb");
     scp_session.WriteRemoteFile("/tmp/barfile", file_size, keep_waiting, [fp](char *buffer, int nbytes){
-  	  LOG(DEBUG, MAIN, "WriteRemoteFile\n");
       ssize_t bytes_read = fread(buffer, 1, nbytes, fp);
+  	  LOG(DEBUG, MAIN, "WriteRemoteFile bytes %i\n", bytes_read);
       return bytes_read;
     }
   );
 
 	eventLoop(-1);
+	ssh_finalize();
   LOG(DEBUG, MAIN, "Exit\n");
   return 0;
 }
