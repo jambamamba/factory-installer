@@ -125,7 +125,7 @@ function main(){
         popd
     else
         set +x
-        echo "Usage: ./builds.h target=<x86|mingw|msys>"
+        echo "Usage: ./builds.h target=<x86|mingw|msys> [clean=true]"
         echo "Possible targets are x86, mingw, msys. "
         echo "Use only one target depending on your host machine (where you are building), and target machine (where you will run the compiled code)"
         echo "  x86:    build machine is x86-linux and target machine is x86-linux"
