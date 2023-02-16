@@ -5,7 +5,7 @@
 #cmake -G "MSYS Makefiles" ..; make -j
 #PATH=$PATH:/c/repos/factory-installer/x86-build/libssh/src/ ./app-factory-installer.exe
 #on linux, building for windows:
-#cmake -DCMAKE_TOOLCHAIN_FILE=../x86_64-w64-mingw32.cmake -G Ninja ..
+#cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/x86_64-w64-mingw32.cmake -G Ninja ..
 
 cmake_minimum_required(VERSION 3.10)
 set (project "factory-installer")

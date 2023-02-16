@@ -70,7 +70,7 @@ function main(){
         ninja --verbose
         popd
     elif [ "$target" == "mingw" ]; then #host linux, target windows
-    	source ./x86_64-w64-mingw32.sh
+    	source ./toolchains/x86_64-w64-mingw32.sh
         #sudo apt-get install -y mingw-w64 \
             # mingw-w64-common \
             # mingw-w64-tools \
@@ -89,7 +89,7 @@ function main(){
         if [ "$clean" == "true" ]; then
             rm -fr *
         fi
-        cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../x86_64-w64-mingw32.cmake \
+        cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../toolchains/x86_64-w64-mingw32.cmake \
             -DCMAKE_MODULE_PATH=$(pwd)/../cmake-modules \
             -DCMAKE_SKIP_RPATH=TRUE \
             -DCMAKE_SKIP_INSTALL_RPATH=TRUE \
