@@ -1,3 +1,4 @@
+#include <file_utils.h>
 #include <debug_logger.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -11,6 +12,7 @@
 #include <dirent.h> 
 #include <sys/time.h>
 #include <unistd.h>
+#include <vector>
 
 #include "rendering_engine.h"
 #include "ssh_session.h"
@@ -63,7 +65,6 @@ static void keypressEvent(uint32_t key, uint32_t btn_id)
     //   lv_label_set_text(_label, text.c_str());
     // }
 }
-static FILE * _fp = stdout;
 static void eventLoop(int loop_count)
 {
   for (int i = 0; loop_count < 0 || i < loop_count; ++i){
@@ -76,45 +77,48 @@ static void eventLoop(int loop_count)
 
 extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 {
- _fp = fopen("log.txt", "wt");
-  fprintf(_fp, "starting factory-installer\n");
+  setProgramName(argv[0]);
+  LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
   init_rendering_engine_sdl(keypressEvent);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
   addTextArea();
 
    //oosman@192.168.4.127
-   SshSession ssh_session([](const std::string &title, const std::string &message){
-	fprintf(_fp, "%s:%s\n", title.c_str(), message.c_str());
+  SshSession ssh_session([](const std::string &title, const std::string &message){
+	LOG(DEBUG, MAIN, "%s:%s\n", title.c_str(), message.c_str());
    });
    auto keep_waiting = 	[](){
 		eventLoop(1);
 		return true;
 	};
   ssh_session.Connect(
-	"192.168.4.142", 
-	22,
-	"oosman",
-	"a",
-  keep_waiting);
-	fprintf(_fp, "connected\n");
+    "192.168.4.143", 
+    22,
+    "oosman",
+    "a",
+    keep_waiting);
+	LOG(DEBUG, MAIN, "Connected\n");
 
   std::string cmd("ls -alh . > /tmp/foobar");
   ssh_session.ExecuteRemoteCommand(cmd, keep_waiting, [](const char *buffer, int nbytes){
     if(nbytes > 0){
-  	  fprintf(_fp, "%s\n", buffer);
+  	  LOG(DEBUG, MAIN, "%s\n", buffer);
     }
     return true;
     }
   );
-#if 0 
 
   ScpSession scp_session(ssh_session.GetSession());
   scp_session.ReadRemoteFile("/tmp/foobar", keep_waiting, [](const char *buffer, int nbytes){
+	  LOG(DEBUG, MAIN, "ReadRemoteFile\n");
     if(nbytes > 0){
-  	  fprintf(_fp, "%s\n", buffer);
+  	  LOG(DEBUG, MAIN, "Read %i bytes of data from remote\n", nbytes);
+      FILE *fp = fopen("c:/users/oosman/foobar", "a+b");
+      fwrite(buffer, nbytes, 1, fp);
+      fclose(fp);
     }
-    return true;
+    return nbytes;
     }
   );
 
@@ -123,12 +127,13 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
     size_t file_size = st.st_size;
     FILE *fp = fopen("c:/Users/oosman/fava", "rb");
     scp_session.WriteRemoteFile("/tmp/barfile", file_size, keep_waiting, [fp](char *buffer, int nbytes){
-    ssize_t bytes_read = fread(buffer, 1, nbytes, fp);
-    return bytes_read;
+  	  LOG(DEBUG, MAIN, "WriteRemoteFile\n");
+      ssize_t bytes_read = fread(buffer, 1, nbytes, fp);
+      return bytes_read;
     }
   );
-#endif
+
 	eventLoop(-1);
-	fclose(_fp);
+  LOG(DEBUG, MAIN, "Exit\n");
   return 0;
 }

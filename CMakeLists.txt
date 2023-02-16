@@ -50,8 +50,8 @@ set (INC_DIRS
 set (COMPILE_DEFINITIONS LV_CONF_INCLUDE_SIMPLE)
 
 set(LIBS
-#   debug_logger
    lvgl 
+   utils
    ssh
 #   cJSON
 #   file_utils

@@ -6,7 +6,7 @@
     "cmake.configureSettings": {
         "CMAKE_MAKE_PROGRAM": "c:/msys64/usr/bin/make.exe"
       },
-    //    "cmake.buildDirectory": "${workspaceRoot}/x86-build",
+    //    "cmake.buildDirectory": "${workspaceRoot}/${buildKit}",
     "git.ignoreLimitWarning": true,
     "files.associations": {
         "functional": "c",
