@@ -69,7 +69,7 @@ function main(){
         cmake -G Ninja ..
         ninja --verbose
         popd
-    elif [ "$target" == "win64" ]; then #host linux, target windows
+    elif [ "$target" == "mingw" ]; then #host linux, target windows
     	source ./x86_64-w64-mingw32.sh
         #sudo apt-get install -y mingw-w64 \
             # mingw-w64-common \
@@ -82,8 +82,8 @@ function main(){
         buildZlib
         buildOpenSSL
 
-        mkdir -p win64-build
-        pushd win64-build
+        mkdir -p mingw-build
+        pushd mingw-build
         # ninja --verbose -j1; exit 0
 
         if [ "$clean" == "true" ]; then

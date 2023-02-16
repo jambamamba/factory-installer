@@ -33,7 +33,6 @@ set (SOURCES
    scp_session.cpp
 )
 
-
 set (INC_DIRS
    target/include/
    ${PROJECT_SOURCE_DIR}
@@ -53,6 +52,7 @@ set(LIBS
    lvgl 
    utils
    ssh
+   pthread
 #   cJSON
 #   file_utils
 #   mq_utils
