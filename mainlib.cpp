@@ -21,6 +21,7 @@
 LOG_CATEGORY(MAIN, "MAIN")
 
 static void taEventCallback(lv_event_t * e){ 
+  //osm: not working, why?
     lv_event_code_t code = lv_event_get_code(e);
     // _machine_ta = lv_event_get_target(e);
     
@@ -53,7 +54,6 @@ static void addTextBox()
 
     _label = lv_label_create(obj);
     lv_label_set_text(_label, "Serial#");
-    lv_obj_add_event_cb(_label, taEventCallback, LV_EVENT_CLICKED, nullptr);
 }
 
 static void addTextArea()
@@ -67,12 +67,15 @@ static void addTextArea()
     lv_textarea_set_one_line(_ta, true);
     // lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_VALUE_CHANGED, nullptr);
     // lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);
-    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_READY/*when enter key is pressed*/, nullptr);
+    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_READY/*when enter key is pressed*/, nullptr); //osm: does not work!
 }
 
 static void keypressEvent(uint32_t key, uint32_t btn_id)
 {
-    printf( "@@@@@@@@ %c\n", key );
+    printf( "@@@@@@@@ %i:%i\n", key, btn_id );
+    if(key == 10 && btn_id == 0){
+      //osm todo: send serial number from _ta to device
+    }
     // const char* p = lv_label_get_text(_label);
     // if(p){
     //   std::string text(p);
