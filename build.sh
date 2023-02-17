@@ -66,7 +66,9 @@ function main(){
         if [ "$clean" == "true" ]; then
             rm -fr *
         fi
-        cmake -G Ninja ..
+        cmake \
+            -DUSE_CPYTHON=OFF \
+            -G Ninja ..
         ninja --verbose
         popd
     elif [ "$target" == "mingw" ]; then #host linux, target windows

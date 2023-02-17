@@ -1,0 +1,26 @@
+[
+  {
+    "name": "msys-build",
+    "compilers": {
+      "C": "C:/msys64/mingw64/bin/gcc.exe",
+      "CXX": "C:/msys64/mingw64/bin/g++.exe"
+    }
+  },
+  {
+    "name": "mingw-build",
+    "compilers": {
+      "C": "/usr/bin/x86_64-w64-mingw32-gcc",
+      "CXX": "/usr/bin/x86_64-w64-mingw32-g++"
+    }
+  },
+  {
+    "name": "x86-build",
+    "environmentVariables": {
+      "SDK_DIR": "/opt/usr_data/sdk"
+    },
+    "compilers": {
+      "C": "/bin/clang",
+      "CXX": "/usr/bin/clang++"
+    }
+  }
+]

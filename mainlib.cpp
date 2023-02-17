@@ -20,6 +20,16 @@
 
 LOG_CATEGORY(MAIN, "MAIN")
 
+static void taEventCallback(lv_event_t * e){ 
+    lv_event_code_t code = lv_event_get_code(e);
+    // _machine_ta = lv_event_get_target(e);
+    
+    if(code == LV_EVENT_CLICKED 
+      /*&& lv_event_get_target(e)==_machine_ta*/){
+    }
+}
+
+
 static lv_obj_t * _label;
 static lv_obj_t * _ta;
 static void addTextBox()
@@ -43,6 +53,7 @@ static void addTextBox()
 
     _label = lv_label_create(obj);
     lv_label_set_text(_label, "Serial#");
+    lv_obj_add_event_cb(_label, taEventCallback, LV_EVENT_CLICKED, nullptr);
 }
 
 static void addTextArea()
@@ -54,10 +65,14 @@ static void addTextArea()
     lv_textarea_set_max_length(_ta, 15);
     lv_textarea_set_text_selection(_ta, true);
     lv_textarea_set_one_line(_ta, true);
+    // lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_VALUE_CHANGED, nullptr);
+    // lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);
+    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_READY/*when enter key is pressed*/, nullptr);
 }
+
 static void keypressEvent(uint32_t key, uint32_t btn_id)
 {
-    // printf( "@@@@@@@@ %c\n", key );
+    printf( "@@@@@@@@ %c\n", key );
     // const char* p = lv_label_get_text(_label);
     // if(p){
     //   std::string text(p);
@@ -94,7 +109,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 		return true;
 	};
   if(!ssh_session.Connect(
-    "192.168.4.143", 
+    "192.168.4.143", //osm todo should be configurable
     22,
     "oosman",
     "a",
@@ -117,7 +132,13 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 	  LOG(DEBUG, MAIN, "ReadRemoteFile\n");
     if(nbytes > 0){
   	  LOG(DEBUG, MAIN, "Read %i bytes of data from remote\n", nbytes);
-      FILE *fp = fopen("c:/users/oosman/foobar", "a+b");
+      FILE *fp = fopen(
+#if defined(WIN32) || defined(MSYS)
+        "c:/users/oosman/foobar", 
+#else
+        "/tmp/foobar",
+#endif
+        "a+b");
       fwrite(buffer, nbytes, 1, fp);
       fclose(fp);
     }
