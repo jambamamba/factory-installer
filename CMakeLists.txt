@@ -41,7 +41,8 @@ set (INC_DIRS
    #${CMAKE_SOURCE_DIR}/extlibs/lvgl/installs/include
    #${CMAKE_SOURCE_DIR}/extlibs/cJSON/installs/include
    #${CMAKE_SOURCE_DIR}/extlibs/cpython/installs/Include
-   ${CMAKE_BINARY_DIR}//utils/cpython-prefix/include/python3.12/
+   # ${CMAKE_BINARY_DIR}//utils/cpython-prefix/include/python3.12/
+   ${CMAKE_SOURCE_DIR}/utils/python311/include
    ${CMAKE_SOURCE_DIR}/lvgl-libraries/
    ${CMAKE_BINARY_DIR}/libssh/include/
    ${THIRD_PARTY_LIB_DIR}
@@ -58,14 +59,14 @@ set(LIBS
 #   mq_utils
 #   rt
 #   pthread
-#   python3.12
+    python311
 #   dl
 #   util
 )
 set(LINK_DIRECTORIES
    ${CMAKE_BINARY_DIR}
    ${CMAKE_BINARY_DIR}/libssh/src
-   
+   ${CMAKE_SOURCE_DIR}/utils/python311/  
 )
 
 if ((CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") OR (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64"))

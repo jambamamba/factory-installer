@@ -66,9 +66,7 @@ function main(){
         if [ "$clean" == "true" ]; then
             rm -fr *
         fi
-        cmake \
-            -DUSE_CPYTHON=OFF \
-            -G Ninja ..
+        cmake -G Ninja ..
         ninja --verbose
         popd
     elif [ "$target" == "mingw" ]; then #host linux, target windows
@@ -101,7 +99,6 @@ function main(){
             -DHAVE_STRTOULL=1 \
             -DHAVE_COMPILER__FUNCTION__=1 \
             -DHAVE_GETADDRINFO=1 \
-            -DUSE_CPYTHON=OFF \
             -G "Ninja" ..
         ninja --verbose
         cp -f lib/libssh.so.4.9.0 .
@@ -119,7 +116,6 @@ function main(){
             rm -fr *
         fi
         cmake \
-            -DUSE_CPYTHON=OFF \
             -DMSYS=TRUE \
             -G "MSYS Makefiles" ..
         VERBOSE=1 make -j
