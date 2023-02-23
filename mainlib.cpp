@@ -13,6 +13,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "json_utils.h"
 #include "rendering_engine.h"
@@ -101,7 +102,9 @@ static void eventLoop(PythonWrapper &py, int loop_count)
 
 static void loadConfig()
 {
-    cJSON* data_json = read_json(DATA_DIR"/json/config.json");
+    std::string path = SDL_GetPrefPath("", "app-factory-installer");
+    path = path + "config.json";
+    cJSON* data_json = read_json(path.c_str());
 
     if(cJSON_GetObjectItemCaseSensitive(data_json, "version")){
       auto foo = cJSON_GetObjectItemCaseSensitive(data_json, "version")->valuestring;
@@ -116,7 +119,8 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 
   loadConfig();
   PythonWrapper py;
-  std::string py_script_to_run(DATA_DIR"/py/main.py");
+  std::string py_script_to_run = SDL_GetPrefPath("", "app-factory-installer");
+  py_script_to_run = py_script_to_run + "main.py";
   if(py.pythonInit(argc, argv, py_script_to_run.c_str())){
     py.registerTouchWidgetProcs(
       [](const char* widget_id){

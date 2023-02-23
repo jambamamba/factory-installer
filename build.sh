@@ -69,6 +69,8 @@ function main(){
         cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..
         ninja --verbose
         popd
+        ln -sf "$(pwd)/json/config.json" "/home/oosman/.local/share/app-factory-installer/config.json"
+        ln -sf "$(pwd)/py/main.py" "/home/oosman/.local/share/app-factory-installer/main.py"
     elif [ "$target" == "mingw" ]; then #host linux, target windows
     	source ./toolchains/x86_64-w64-mingw32.sh
         #sudo apt-get install -y mingw-w64 \
@@ -111,6 +113,9 @@ function main(){
         cp -f /tmp/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
+        # do this on Windows: 
+        #  cp ../json/config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
+        #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build
