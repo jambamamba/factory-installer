@@ -11,18 +11,22 @@ cmake_minimum_required(VERSION 3.10)
 set (project "factory-installer")
 project(${project})
 
-
 OPTION(WITH_EXAMPLES "" OFF)
 SET(WITH_EXAMPLES OFF CACHE BOOL "Dont build LibSSH Examples")
 SET(BUILD_STATIC_LIB ON CACHE BOOL "Build static library")
 
 if (MINGW)
-find_package(SDL2 REQUIRED)
+   find_package(SDL2 REQUIRED)
 endif()
-add_subdirectory(libssh)
+if (MINGW)
+   set(BUILD_STATIC_LIB OFF)
+   add_subdirectory(libssh)
+   set(BUILD_STATIC_LIB ON)
+else()
+   add_subdirectory(libssh)
+endif()
 add_subdirectory(lvgl-libraries)
 add_subdirectory(utils)
-
 
 set (SOURCES
    mainlib.cpp
@@ -38,15 +42,19 @@ set (INC_DIRS
    ${PROJECT_SOURCE_DIR}
    ${PROJECT_SOURCE_DIR}/.. 
    ${CMAKE_SOURCE_DIR}/utils
-   #${CMAKE_SOURCE_DIR}/extlibs/lvgl/installs/include
-   #${CMAKE_SOURCE_DIR}/extlibs/cJSON/installs/include
-   #${CMAKE_SOURCE_DIR}/extlibs/cpython/installs/Include
-   # ${CMAKE_BINARY_DIR}//utils/cpython-prefix/include/python3.12/
-   ${CMAKE_SOURCE_DIR}/utils/python311/include
    ${CMAKE_SOURCE_DIR}/lvgl-libraries/
    ${CMAKE_BINARY_DIR}/libssh/include/
    ${THIRD_PARTY_LIB_DIR}
    )
+if (MINGW)
+   set (INC_DIRS ${INC_DIRS} 
+      ${CMAKE_SOURCE_DIR}/utils/python311/include
+#SDL2/SDL.h:      
+#      /usr/include
+      /tmp/SDL2-2.26.3/x86_64-w64-mingw32/include/ 
+      )
+endif()
+
 set (COMPILE_DEFINITIONS LV_CONF_INCLUDE_SIMPLE)
 
 set(LIBS
@@ -54,22 +62,30 @@ set(LIBS
    utils
    ssh
    pthread
-#   cJSON
-#   file_utils
-#   mq_utils
-#   rt
-#   pthread
-    python311
-#   dl
-#   util
 )
+
+if (MINGW)
+   set (LIBS ${LIBS} python311 )
+else()
+   set (LIBS ${LIBS} python3.12)
+endif()
+
 set(LINK_DIRECTORIES
    ${CMAKE_BINARY_DIR}
    ${CMAKE_BINARY_DIR}/libssh/src
-   ${CMAKE_SOURCE_DIR}/utils/python311/  
 )
+if (MINGW)
+   set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
+      ${CMAKE_SOURCE_DIR}/utils/python311 /mingw64/bin/ 
+      /tmp/SDL2-2.26.3/x86_64-w64-mingw32/bin/
+      )
+else()
+   set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
+      ${CMAKE_SOURCE_DIR}/utils/cpython/build/x86-build
+      )
+endif()
 
-if ((CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") OR (CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64"))
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
    set (INC_DIRS 
       ${INC_DIRS}
       /usr/include/SDL2/
@@ -84,8 +100,6 @@ if ((CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64") OR (CMAKE_SYSTEM_PROCESSOR MATCHES
       ${SDL_LIB_DIR}
       ${OPENSSL_LIBRARIES}
       ${ZLIB_ROOT}
-      /mingw64/bin/
-      #${CMAKE_SOURCE_DIR}/../lvgl-libraries/build
    )
    set (COMPILE_DEFINITIONS 
       ${COMPILE_DEFINITIONS} 

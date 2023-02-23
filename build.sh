@@ -94,14 +94,17 @@ function main(){
             -DCMAKE_SKIP_RPATH=TRUE \
             -DCMAKE_SKIP_INSTALL_RPATH=TRUE \
             -DWIN32=TRUE \
+            -DMINGW64=${MINGW64} \
             -DWITH_GCRYPT=OFF \
             -DWITH_MBEDTLS=OFF \
             -DHAVE_STRTOULL=1 \
             -DHAVE_COMPILER__FUNCTION__=1 \
             -DHAVE_GETADDRINFO=1 \
+            -DENABLE_CUSTOM_COMPILER_FLAGS=OFF \
+            -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DTHREADSAFE=ON -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_RC_COMPILER="$(which x86_64-w64-mingw32-windres)" -DDLLTOOL="$(which x86_64-w64-mingw32-dlltool)" -DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32 -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_INSTALL_PREFIX=../install-win \
             -G "Ninja" ..
         ninja --verbose
-        cp -f lib/libssh.so.4.9.0 .
+        cp -f ../utils/python311/python311.dll .
         cp -f /tmp/zlib-1.2.13/zlib1.dll .
         cp -f /tmp/openssl-1.1.1t/libcrypto-1_1-x64.dll .
         cp -f /tmp/openssl-1.1.1t/libssl-1_1-x64.dll .

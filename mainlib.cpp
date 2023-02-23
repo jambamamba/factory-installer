@@ -17,6 +17,7 @@
 #include "rendering_engine.h"
 #include "ssh_session.h"
 #include "scp_session.h"
+#include "python_wrapper.h"
 
 LOG_CATEGORY(MAIN, "MAIN")
 
@@ -83,9 +84,12 @@ static void keypressEvent(uint32_t key, uint32_t btn_id)
     //   lv_label_set_text(_label, text.c_str());
     // }
 }
-static void eventLoop(int loop_count)
+static void eventLoop(PythonWrapper &py, int loop_count)
 {
   for (int i = 0; loop_count < 0 || i < loop_count; ++i){
+    if(!py.eventLoop()){
+      return;
+    }
     /* Periodically call the lv_task handler.
        * It could be done in a timer interrupt or an OS task too.*/
     lv_timer_handler();
@@ -97,12 +101,44 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 {
   setProgramName(argv[0]);
   LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
+
+  PythonWrapper py;
+  std::string py_script_to_run;
+  if(py.pythonInit(argc, argv, py_script_to_run.c_str())){
+    py.registerTouchWidgetProcs(
+      [](const char* widget_id){
+        // ScreenManager::getScreenManager()->loadScreenById(widget_id);
+        return true;
+      },
+      [](const char* widget_id){
+        return true;//return touchWidgetById(widget_id);
+      },
+      [](const char *obj_text, int nth_obj){
+        return true;//return touchWidgetByText(obj_text, nth_obj);
+      },
+      [](int32_t x, int32_t y){
+        return true;//return touchScreenAtPoint(x, y);
+      },
+      [](int32_t x, int32_t y){
+        return "";//return getWidgetTextOnScreenAt(x, y);
+      } 
+    );
+  }
+
+
   init_rendering_engine_sdl(keypressEvent);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
   addTextArea();
 
   ssh_init();
+
+  if(!py.pythonCallMain([&py](){
+    eventLoop(py, -1);
+  })){
+    eventLoop(py, -1);
+  }
+#if 0
    //oosman@192.168.4.127
   SshSession ssh_session([](const std::string &title, const std::string &message){
 	LOG(DEBUG, MAIN, "%s:%s\n", title.c_str(), message.c_str());
@@ -159,8 +195,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
       return bytes_read;
     }
   );
-
-	eventLoop(-1);
+#endif
 	ssh_finalize();
   LOG(DEBUG, MAIN, "Exit\n");
   return 0;
