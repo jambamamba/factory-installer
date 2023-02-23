@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <vector>
 
+#include "json_utils.h"
 #include "rendering_engine.h"
 #include "ssh_session.h"
 #include "scp_session.h"
@@ -97,13 +98,24 @@ static void eventLoop(PythonWrapper &py, int loop_count)
   }
 }
 
+static void loadConfig()
+{
+    cJSON* data_json = read_json(DATA_DIR"/json/config.json");
+
+    if(cJSON_GetObjectItemCaseSensitive(data_json, "version")){
+      auto foo = cJSON_GetObjectItemCaseSensitive(data_json, "version")->valuestring;
+      foo = "";
+    }
+}
+
 extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 {
   setProgramName(argv[0]);
   LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
 
+  loadConfig();
   PythonWrapper py;
-  std::string py_script_to_run;
+  std::string py_script_to_run(DATA_DIR"/py/main.py");
   if(py.pythonInit(argc, argv, py_script_to_run.c_str())){
     py.registerTouchWidgetProcs(
       [](const char* widget_id){
@@ -138,13 +150,13 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
   })){
     eventLoop(py, -1);
   }
-#if 0
+#if 1
    //oosman@192.168.4.127
   SshSession ssh_session([](const std::string &title, const std::string &message){
 	LOG(DEBUG, MAIN, "%s:%s\n", title.c_str(), message.c_str());
    });
-   auto keep_waiting = 	[](){
-		eventLoop(1);
+   auto keep_waiting = 	[&py](){
+		eventLoop(py, -1);
 		return true;
 	};
   if(!ssh_session.Connect(

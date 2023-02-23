@@ -66,7 +66,7 @@ function main(){
         if [ "$clean" == "true" ]; then
             rm -fr *
         fi
-        cmake -G Ninja ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..
         ninja --verbose
         popd
     elif [ "$target" == "mingw" ]; then #host linux, target windows

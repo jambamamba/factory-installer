@@ -1,0 +1,15 @@
+{
+    // https://github.com/vadimcn/vscode-lldb/blob/v1.8.1/MANUAL.md
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "lldb",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceRoot}/x86-build/app-factory-installer",
+            // "args": ["single_process=true"],
+            "cwd": "${workspaceRoot}"
+        }
+    ]
+}

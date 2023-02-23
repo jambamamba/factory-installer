@@ -1,0 +1,22 @@
+[
+  {
+    "name": "arm-build",
+    "environmentVariables": {
+      "YOCTO_BUILD_DIR": "${workspaceFolder}/../../build_wayland/tmp/",
+      "SDK_DIR": "/opt/usr_data/sdk",
+      "LD_LIBRARY_PATH": "/opt/usr_data/sdk/sysroots/aarch64-fslc-linux/usr/lib:$LD_LIBRARY_PATH"
+    },
+    "environmentSetupScript": "/opt/usr_data/sdk/environment-setup-aarch64-fslc-linux",
+    "toolchainFile": "/opt/usr_data/sdk/sysroots/x86_64-fslcsdk-linux/usr/share/cmake/OEToolchainConfig.cmake"
+  },
+  {
+    "name": "x86-build",
+    "environmentVariables": {
+      "SDK_DIR": "/opt/usr_data/sdk"
+    },
+    "compilers": {
+      "C": "/bin/clang",
+      "CXX": "/usr/bin/clang++"
+    }
+  }
+]

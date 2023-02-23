@@ -1,0 +1,99 @@
+{
+   "version": "1.0",
+   "heartbeat_timeout_ms": "1000",
+   "max_allowed_skipped_heartbeats": "3",
+   "services": [
+      {
+         "name": "steno-gui",
+         "path": "",
+         "disabled": "false",
+         "env": [
+            { "DISPLAY": ":0.0" },
+            { "XDG_RUNTIME_DIR": "/run/user/$USER" }
+         ],
+         "args": [ { 
+            "update_hz": "1", 
+            "compositor": "wayland",
+            "py_main" : "/opt/usr_data/stenograph/data/tests/py/main.py" 
+         } ],
+         "entry_point": "GuiEntryPoint"
+      },
+      {
+         "name": "steno-functionkey-reader",
+         "path": "",
+         "disabled": "false",
+         "args": [ { "update_hz": "1", "device": "/dev/i2c-3" } ],
+         "entry_point": "FunctionkeyReaderEntryPoint"
+      },
+      {
+         "name": "steno-wifi-manager",
+         "path": "",
+         "disabled": "false",
+         "args": [ { "update_hz": "10" } ],
+         "entry_point": "WifiManagerEntryPoint"
+      },
+      {
+         "name": "steno-update-manager",
+         "path": "",
+         "disabled": "false",
+         "args": [
+            {
+               "update_hz": "1",
+               "iothubnextgenwriter": "https://iothubnextgenwriter.blob.core.windows.net/nextgen-software-update/",
+               "iothubnextgenwriter_local": "http://127.0.0.1:8080/",
+               "metadata_json": "metadata.importmanifest.json",
+               "connParam": "?sp=rl&st=2022-10-25T14:47:40Z&se=2052-10-25T22:47:40Z&spr=https&sv=2021-06-08&sr=c&sig=3hnYHw1FQaHMFQzXzSRJMmA0Y2h6EcA%2Fq1FuTIbp6ac%3D",
+               "connParam_local": "",
+               "max_count_of_resume_updating_for_internet_loss": "3",
+               "time_waiting_for_internet_reconnect_try_minutes": "1",
+               "time_allowed_for_downloading_to_finish_minutes": "5",
+               "curl_timeout_sec": "15",
+               "time_step_for_logging_updater_heartbeat_sec": "900"
+            } 
+         ],
+         "entry_point": "UpdateManagerEntryPoint"
+      },
+      {
+         "name": "steno-sensorboard-reader",
+         "path": "",
+         "disabled": "false",
+         "args": [
+            {
+               "update_hz": "4",
+               "gpiochip": "5",
+               "gpio_line_num": "28",
+               "spi_bits_per_word": "8",
+               "spi_mode": "0",
+               "spi_speed_hz": "2000000",
+               "spi_device": ["/dev/spidev2.0", "/dev/spidev0.0", "/dev/spidev0.1", "/dev/spidev0.2"]
+            }
+         ],
+         "entry_point": "SensorBoardReaderEntryPoint"
+      },
+      {
+         "name": "steno-translation-manager",
+         "path": "",
+         "disabled": "false",
+         "args": [
+            {
+               "update_hz": "100",
+               "main_dictionary": "LargeDictImage.bin"
+            }
+         ],
+         "entry_point": "TranslationManagerEntryPoint"
+      },
+      {
+         "name": "steno-comm-processor",
+         "path": "",
+         "disabled": "false",
+         "entry_point": "CommProcessorEntryPoint"
+      }
+   ],
+   "python":
+   {
+      "module_search_path": [
+           "/usr/local/lib/cpython/Lib",
+           "/usr/local/lib/cpython/build/Lib"
+       ]
+   } 
+}
