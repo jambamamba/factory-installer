@@ -22,19 +22,22 @@
 
 LOG_CATEGORY(MAIN, "MAIN")
 
+
+static lv_obj_t * _label;
+static lv_obj_t * _ta;
+
 static void taEventCallback(lv_event_t * e){ 
   //osm: not working, why?
     lv_event_code_t code = lv_event_get_code(e);
     // _machine_ta = lv_event_get_target(e);
     
+//    LOG(DEBUG, MAIN, "taEventCallback code: %i, target:%x, _ta:%x\n", code, lv_event_get_target(e), _ta);
     if(code == LV_EVENT_CLICKED 
-      /*&& lv_event_get_target(e)==_machine_ta*/){
+      && lv_event_get_target(e)==_ta){
+        const char * text = lv_textarea_get_text(_ta);
+        LOG(DEBUG, MAIN, "taEventCallback text: %s\n", text);
     }
 }
-
-
-static lv_obj_t * _label;
-static lv_obj_t * _ta;
 static void addTextBox()
 {
     static lv_style_t style;
@@ -67,9 +70,7 @@ static void addTextArea()
     lv_textarea_set_max_length(_ta, 15);
     lv_textarea_set_text_selection(_ta, true);
     lv_textarea_set_one_line(_ta, true);
-    // lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_VALUE_CHANGED, nullptr);
-    // lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);
-    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_READY/*when enter key is pressed*/, nullptr); //osm: does not work!
+    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);//also triggered when Enter key is pressed
 }
 
 static void keypressEvent(uint32_t key, uint32_t btn_id)
