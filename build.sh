@@ -68,9 +68,10 @@ function main(){
         fi
         cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..
         ninja --verbose
-        popd
-        ln -sf "$(pwd)/json/config.json" "/home/oosman/.local/share/app-factory-installer/config.json"
-        ln -sf "$(pwd)/py/main.py" "/home/oosman/.local/share/app-factory-installer/main.py"
+        ln -sf "../config.json" .
+        ln -sf "../config.json" "/home/$USER/.local/share/app-factory-installer/config.json"
+        ln -sf "../py/main.py" .
+        ln -sf "../py/main.py" "/home/$USER/.local/share/app-factory-installer/main.py"
     elif [ "$target" == "mingw" ]; then #host linux, target windows
     	source ./toolchains/x86_64-w64-mingw32.sh
         #sudo apt-get install -y mingw-w64 \
@@ -106,6 +107,13 @@ function main(){
             -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DTHREADSAFE=ON -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_RC_COMPILER="$(which x86_64-w64-mingw32-windres)" -DDLLTOOL="$(which x86_64-w64-mingw32-dlltool)" -DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32 -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_INSTALL_PREFIX=../install-win \
             -G "Ninja" ..
         ninja --verbose
+        ln -sf "../config.json" .
+        ln -sf "../config.json" "/home/$USER/.local/share/app-factory-installer/config.json"
+        ln -sf "../py/main.py" .
+        ln -sf "../py/main.py" "/home/$USER/.local/share/app-factory-installer/main.py"
+        # do this if on Windows: 
+        #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
+        #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
         cp -f ../utils/python311/python311.dll .
         cp -f /tmp/zlib-1.2.13/zlib1.dll .
         cp -f /tmp/openssl-1.1.1t/libcrypto-1_1-x64.dll .
@@ -113,9 +121,6 @@ function main(){
         cp -f /tmp/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
-        # do this on Windows: 
-        #  cp ../json/config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
-        #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build

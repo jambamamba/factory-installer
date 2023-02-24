@@ -15,6 +15,7 @@ OPTION(WITH_EXAMPLES "" OFF)
 SET(WITH_EXAMPLES OFF CACHE BOOL "Dont build LibSSH Examples")
 SET(BUILD_STATIC_LIB ON CACHE BOOL "Build static library")
 
+add_compile_definitions(APP_NAME="${project}")
 if (MINGW)
    find_package(SDL2 REQUIRED)
 endif()
@@ -32,6 +33,8 @@ add_subdirectory(utils)
 
 set (SOURCES
    mainlib.cpp
+   my_device.h
+   my_device.cpp
    rendering_engine.c
    ssh_session.h
    ssh_session.cpp

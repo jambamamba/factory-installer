@@ -20,15 +20,32 @@
 #include "ssh_session.h"
 #include "scp_session.h"
 #include "python_wrapper.h"
+#include "my_device.h"
 
 LOG_CATEGORY(MAIN, "MAIN")
 
-
+namespace {
 static lv_obj_t * _label;
 static lv_obj_t * _ta;
+enum StateE {
+  State_None = 0,
+  State_SshConnecting,
+};
+static StateE _state = State_None;
+
+static void setDeviceSerialNum(MyDevice *device, const char *serialnum){
+  std::string workdir(SDL_GetPrefPath("", APP_NAME));
+  std::string local_serialnum_file = workdir + "serial_number.json";
+  _state = State_SshConnecting;
+  if(device->openSession()){
+    // device.runCommand("ls -alh . > /tmp/foobar");
+    device->getSerialNumberFile(local_serialnum_file);
+    device->putSerialNumberFile(local_serialnum_file);
+  }
+  _state = State_None;
+}
 
 static void taEventCallback(lv_event_t * e){ 
-  //osm: not working, why?
     lv_event_code_t code = lv_event_get_code(e);
     // _machine_ta = lv_event_get_target(e);
     
@@ -37,6 +54,7 @@ static void taEventCallback(lv_event_t * e){
       && lv_event_get_target(e)==_ta){
         const char * text = lv_textarea_get_text(_ta);
         LOG(DEBUG, MAIN, "taEventCallback text: %s\n", text);
+        setDeviceSerialNum(static_cast<MyDevice*>(lv_event_get_user_data(e)), text);
     }
 }
 static void addTextBox()
@@ -62,7 +80,7 @@ static void addTextBox()
     lv_label_set_text(_label, "Serial#");
 }
 
-static void addTextArea()
+static void addTextArea(MyDevice &device)
 {
     _ta = lv_textarea_create(lv_scr_act());
     lv_textarea_set_text(_ta, "");
@@ -71,7 +89,7 @@ static void addTextArea()
     lv_textarea_set_max_length(_ta, 15);
     lv_textarea_set_text_selection(_ta, true);
     lv_textarea_set_one_line(_ta, true);
-    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);//also triggered when Enter key is pressed
+    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, &device);//also triggered when Enter key is pressed
 }
 
 static void keypressEvent(uint32_t key, uint32_t btn_id)
@@ -90,6 +108,9 @@ static void keypressEvent(uint32_t key, uint32_t btn_id)
 static void eventLoop(PythonWrapper &py, int loop_count)
 {
   for (int i = 0; loop_count < 0 || i < loop_count; ++i){
+    if(_state == State_SshConnecting){
+      LOG(DEBUG, MAIN, "WAITING ....\n");
+    }
     if(!py.eventLoop()){
       return;
     }
@@ -100,120 +121,78 @@ static void eventLoop(PythonWrapper &py, int loop_count)
   }
 }
 
-static void loadConfig()
+static std::string configPath(const std::string &filename)
 {
-    std::string path = SDL_GetPrefPath("", "app-factory-installer");
-    path = path + "config.json";
-    cJSON* data_json = read_json(path.c_str());
-
-    if(cJSON_GetObjectItemCaseSensitive(data_json, "version")){
-      auto foo = cJSON_GetObjectItemCaseSensitive(data_json, "version")->valuestring;
-      foo = "";
+    std::string path = SDL_GetPrefPath("", FileUtils::getProgramName().c_str());
+    LOG(DEBUG, MAIN, "configPath, 1-trying path %s\n", path.c_str());  
+    if(FileUtils::fileExists(std::string(path + filename))){
+      return FileUtils::toLinuxPathSeparators(path + filename);
     }
+
+    path = FileUtils::getProgramPath();
+    LOG(DEBUG, MAIN, "configPath, 2-trying path %s\n", (path + "/config.json").c_str());  
+    if(FileUtils::fileExists(path + "/config.json")){
+      return FileUtils::toLinuxPathSeparators(path + "/config.json");
+    }
+
+    LOG(DEBUG, MAIN, "configPath, 3-trying path %s\n", filename.c_str());  
+    if(FileUtils::fileExists(filename)){
+      return filename;
+    }
+
+    LOG(FATAL, MAIN, "configPath, exhausted all options\n");  
+    return "";
 }
+
+static PythonWrapper loadPython(int argc, char** argv)
+{
+  PythonWrapper py;
+  if(py.pythonInit(argc, argv, configPath("cmain.py").c_str())){
+    // py.registerTouchWidgetProcs(
+    //   [](const char* widget_id){
+    //     // ScreenManager::getScreenManager()->loadScreenById(widget_id);
+    //     return true;
+    //   },
+    //   [](const char* widget_id){
+    //     return true;//return touchWidgetById(widget_id);
+    //   },
+    //   [](const char *obj_text, int nth_obj){
+    //     return true;//return touchWidgetByText(obj_text, nth_obj);
+    //   },
+    //   [](int32_t x, int32_t y){
+    //     return true;//return touchScreenAtPoint(x, y);
+    //   },
+    //   [](int32_t x, int32_t y){
+    //     return "";//return getWidgetTextOnScreenAt(x, y);
+    //   } 
+    // );
+  }
+  return py;
+}
+
+}//namespace
 
 extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 {
-  setProgramName(argv[0]);
+  PROGRAM_INIT(argv[0], SDL_GetPrefPath("", APP_NAME));
   LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
 
-  loadConfig();
-  PythonWrapper py;
-  std::string py_script_to_run = SDL_GetPrefPath("", "app-factory-installer");
-  py_script_to_run = py_script_to_run + "main.py";
-  if(py.pythonInit(argc, argv, py_script_to_run.c_str())){
-    py.registerTouchWidgetProcs(
-      [](const char* widget_id){
-        // ScreenManager::getScreenManager()->loadScreenById(widget_id);
-        return true;
-      },
-      [](const char* widget_id){
-        return true;//return touchWidgetById(widget_id);
-      },
-      [](const char *obj_text, int nth_obj){
-        return true;//return touchWidgetByText(obj_text, nth_obj);
-      },
-      [](int32_t x, int32_t y){
-        return true;//return touchScreenAtPoint(x, y);
-      },
-      [](int32_t x, int32_t y){
-        return "";//return getWidgetTextOnScreenAt(x, y);
-      } 
-    );
-  }
-
+  PythonWrapper py = loadPython(argc, argv);
+  MyDevice device(configPath("config.json").c_str(), [&py](){
+    eventLoop(py, 1);
+    return true;
+  });
 
   init_rendering_engine_sdl(keypressEvent);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
-  addTextArea();
-
-  ssh_init();
+  addTextArea(device);
 
   if(!py.pythonCallMain([&py](){
     eventLoop(py, -1);
   })){
     eventLoop(py, -1);
   }
-#if 1
-   //oosman@192.168.4.127
-  SshSession ssh_session([](const std::string &title, const std::string &message){
-	LOG(DEBUG, MAIN, "%s:%s\n", title.c_str(), message.c_str());
-   });
-   auto keep_waiting = 	[&py](){
-		eventLoop(py, -1);
-		return true;
-	};
-  if(!ssh_session.Connect(
-    "192.168.4.143", //osm todo should be configurable
-    22,
-    "oosman",
-    "a",
-    keep_waiting)){
-  	LOG(FATAL, MAIN, "FAILD to Connect\n");
-    }
-	LOG(DEBUG, MAIN, "Connected\n");
-
-  std::string cmd("ls -alh . > /tmp/foobar");
-  ssh_session.ExecuteRemoteCommand(cmd, keep_waiting, [](const char *buffer, int nbytes){
-    if(nbytes > 0){
-  	  LOG(DEBUG, MAIN, "%s\n", buffer);
-    }
-    return true;
-    }
-  );
-
-  ScpSession scp_session(ssh_session.GetSession());
-  scp_session.ReadRemoteFile("/tmp/foobar", keep_waiting, [](const char *buffer, int nbytes){
-	  LOG(DEBUG, MAIN, "ReadRemoteFile\n");
-    if(nbytes > 0){
-  	  LOG(DEBUG, MAIN, "Read %i bytes of data from remote\n", nbytes);
-      FILE *fp = fopen(
-#if defined(WIN32) || defined(MSYS)
-        "c:/users/oosman/foobar", 
-#else
-        "/tmp/foobar",
-#endif
-        "a+b");
-      fwrite(buffer, nbytes, 1, fp);
-      fclose(fp);
-    }
-    return nbytes;
-    }
-  );
-
-    struct stat st;
-    stat("c:/Users/oosman/fava", &st);
-    size_t file_size = st.st_size;
-    FILE *fp = fopen("c:/Users/oosman/fava", "rb");
-    scp_session.WriteRemoteFile("/tmp/barfile", file_size, keep_waiting, [fp](char *buffer, int nbytes){
-      ssize_t bytes_read = fread(buffer, 1, nbytes, fp);
-  	  LOG(DEBUG, MAIN, "WriteRemoteFile bytes %i\n", bytes_read);
-      return bytes_read;
-    }
-  );
-#endif
-	ssh_finalize();
   LOG(DEBUG, MAIN, "Exit\n");
   return 0;
 }

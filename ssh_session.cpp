@@ -225,24 +225,28 @@ bool SshSession::ExecuteRemoteCommand(const std::string &cmd,
                                        std::function<bool()> keepWaiting,
                                        std::function <bool(const char *buffer, int nbytes)> stdoutfn)
 {
-   if(!_session || !_connected)
-   {
+   if(!_session){
+      LOG(FATAL, SSH, "No ssh session\n");
+      return false;
+   }
+   if(!_connected){
+      LOG(FATAL, SSH, "Not connected\n");
       return false;
    }
    ssh_channel channel = ssh_channel_new(_session);
-   if (channel == nullptr)
-   {
-     return false;
+   if (channel == nullptr){
+      LOG(FATAL, SSH, "Could not create channel\n");
+      return false;
    }
    int rc = ssh_channel_open_session(channel);
-   if (rc != SSH_OK)
-   {
+   if (rc != SSH_OK){
+      LOG(FATAL, SSH, "Could not open channel\n");
      ssh_channel_free(channel);
      return false;
    }
    rc = ssh_channel_request_exec(channel, cmd.c_str());
-   if (rc != SSH_OK)
-   {
+   if (rc != SSH_OK){
+     LOG(FATAL, SSH, "Could not execute request on connected channel\n");
      ssh_channel_close(channel);
      ssh_channel_free(channel);
      return false;
@@ -252,39 +256,31 @@ bool SshSession::ExecuteRemoteCommand(const std::string &cmd,
    constexpr int STDOUT = 0;
    constexpr int STDERR = 1;
    int nbytes = ssh_channel_read_timeout(channel, buffer, sizeof(buffer), STDERR, TIMEOUT_MS);
-   while (nbytes > 0)
-   {
-      if(!keepWaiting())
-      {
+   while (nbytes > 0){
+      if(!keepWaiting()){
          ssh_channel_send_eof(channel);
          ssh_channel_close(channel);
          ssh_channel_free(channel);
          return false;
       }
-      else if(stdoutfn)
-      {
-        if(!stdoutfn(buffer, nbytes))
-        {
+      else if(stdoutfn){
+        if(!stdoutfn(buffer, nbytes)){
            break;
         }
       }
-      else
-      {
+      else{
         LOG(DEBUG, SSH, "Recvd: %s\n", buffer);
       }
       nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
    }
-   if (nbytes < 0 && ssh_get_error_code(_session) != 2/*Remote channel is closed*/)
-   {
+   if (nbytes < 0 && ssh_get_error_code(_session) != 2/*Remote channel is closed*/){
       char message[256] = {0};
       snprintf(message, sizeof(message)-1, "Read error: %i:%s\n", ssh_get_error_code(_session), ssh_get_error(_session));
 
-     if(stdoutfn)
-     {
+     if(stdoutfn){
         stdoutfn(message, strlen(message)+1);
      }
-     else
-     {
+     else{
       LOG(DEBUG, SSH, "%s\n", message);
      }
      ssh_channel_close(channel);
