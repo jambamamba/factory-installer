@@ -59,35 +59,66 @@ updateSerialNumberInJson(const std::string &local_serialnum_file, const std::str
 
 static std::string _status_msg;
 static SshStateE _state = SshState_None;
+
+static std::string configPath(const std::string &filename)
+{
+    std::string path = SDL_GetPrefPath("", FileUtils::getProgramName().c_str());
+    LOG(DEBUG, MAIN, "configPath, 1-trying path %s\n", path.c_str());  
+    if(FileUtils::fileExists(std::string(path + filename))){
+      return FileUtils::toLinuxPathSeparators(path + filename);
+    }
+
+    path = FileUtils::getProgramPath();
+    LOG(DEBUG, MAIN, "configPath, 2-trying path %s\n", (path + "/config.json").c_str());  
+    if(FileUtils::fileExists(path + "/config.json")){
+      return FileUtils::toLinuxPathSeparators(path + "/config.json");
+    }
+
+    LOG(DEBUG, MAIN, "configPath, 3-trying path %s\n", filename.c_str());  
+    if(FileUtils::fileExists(filename)){
+      return filename;
+    }
+
+    LOG(FATAL, MAIN, "configPath, exhausted all options\n");  
+    return "";
+}
+
+
 static void 
-setDeviceSerialNum(MyDevice *device, const char *serialnum){
-  _task = std::thread([device, serialnum](){
+setDeviceSerialNum(const char *serialnum){
+  if(_task.joinable()){
+    _task.join();
+  }
+  _task = std::thread([serialnum](){
+    MyDevice device(configPath("config.json").c_str(), [](){
+      return !_die;
+    });
     std::string workdir(SDL_GetPrefPath("", APP_NAME));
     std::string local_serialnum_file = workdir + "serial_number.json";
     LOG(DEBUG, MAIN, "CONNECTING ....\n");
     _state = SshState_Connecting;
-    _status_msg = std::string("Connecting to ") + device->ip();
-    if(!device->openSession()){
+    _status_msg = std::string("Connecting to ") + device.ip();
+    if(!device.openSession()){
       _state = SshState_None;
       _status_msg = std::string("Connection failed.\n") + 
-        std::string("Is the device with IP ") + device->ip() + 
+        std::string("Is the device with IP ") + device.ip() + 
         std::string(" on your network?");
         return;
     }
     _state = SshState_Connected;
-    _status_msg = std::string("Connected to ") + device->ip();
+    _status_msg = std::string("Connected to ") + device.ip();
     // device.runCommand("ls -alh . > /tmp/foobar");
-    device->getSerialNumberFile(local_serialnum_file);
+    device.getSerialNumberFile(local_serialnum_file);
     if(FileUtils::fileExists(local_serialnum_file)){
       if(!updateSerialNumberInJson(local_serialnum_file, serialnum)){
       _state = SshState_None;
-      _status_msg = std::string("Failed to set serial number on device:\n") + device->ip();
+      _status_msg = std::string("Failed to set serial number on device:\n") + device.ip();
         return;
       }
       _state = SshState_SettingSerialNumber;
       _status_msg = std::string("Setting serial number '") + std::string(serialnum) + "'\n" +
-        std::string(" to device ") + device->ip();
-      device->putSerialNumberFile(local_serialnum_file);
+        std::string(" to device ") + device.ip();
+      device.putSerialNumberFile(local_serialnum_file);
     }
   });
 }
@@ -99,10 +130,10 @@ static void taEventCallback(lv_event_t * e){
 //    LOG(DEBUG, MAIN, "taEventCallback code: %i, target:%x, _ta:%x\n", code, lv_event_get_target(e), _ta);
     if(code == LV_EVENT_CLICKED 
       && lv_event_get_target(e)==_ta){
-        MyDevice *device = static_cast<MyDevice*>(lv_event_get_user_data(e));
         const char * text = lv_textarea_get_text(_ta);
+        // MyDevice *device = static_cast<MyDevice*>(lv_event_get_user_data(e));
         LOG(DEBUG, MAIN, "taEventCallback text: %s\n", text);
-        setDeviceSerialNum(device, text);
+        setDeviceSerialNum(text);
     }
 }
 static void addTextBox()
@@ -128,7 +159,7 @@ static void addTextBox()
     lv_label_set_text(_label_serialnum, "Serial#");
 }
 
-static void addTextArea(MyDevice &device)
+static void addTextArea()
 {
     _ta = lv_textarea_create(lv_scr_act());
     lv_textarea_set_text(_ta, "");
@@ -137,7 +168,7 @@ static void addTextArea(MyDevice &device)
     lv_textarea_set_max_length(_ta, 15);
     lv_textarea_set_text_selection(_ta, true);
     lv_textarea_set_one_line(_ta, true);
-    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, &device);//also triggered when Enter key is pressed
+    lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);//also triggered when Enter key is pressed
 }
 
 static void addStatusMessage()
@@ -220,7 +251,7 @@ updateWithSshActivity(){
 }
 
 static void 
-eventLoop(PythonWrapper &py, MyDevice &device, int loop_count)
+eventLoop(PythonWrapper &py, int loop_count)
 {
   for (int i = 0; !_die && (loop_count < 0 || i < loop_count); ++i){
     updateWithSshActivity();
@@ -232,29 +263,6 @@ eventLoop(PythonWrapper &py, MyDevice &device, int loop_count)
   }
     // SDL_Delay
 
-}
-
-static std::string configPath(const std::string &filename)
-{
-    std::string path = SDL_GetPrefPath("", FileUtils::getProgramName().c_str());
-    LOG(DEBUG, MAIN, "configPath, 1-trying path %s\n", path.c_str());  
-    if(FileUtils::fileExists(std::string(path + filename))){
-      return FileUtils::toLinuxPathSeparators(path + filename);
-    }
-
-    path = FileUtils::getProgramPath();
-    LOG(DEBUG, MAIN, "configPath, 2-trying path %s\n", (path + "/config.json").c_str());  
-    if(FileUtils::fileExists(path + "/config.json")){
-      return FileUtils::toLinuxPathSeparators(path + "/config.json");
-    }
-
-    LOG(DEBUG, MAIN, "configPath, 3-trying path %s\n", filename.c_str());  
-    if(FileUtils::fileExists(filename)){
-      return filename;
-    }
-
-    LOG(FATAL, MAIN, "configPath, exhausted all options\n");  
-    return "";
 }
 
 static PythonWrapper loadPython(int argc, char** argv)
@@ -291,21 +299,18 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
   LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
 
   PythonWrapper py = loadPython(argc, argv);
-  MyDevice device(configPath("config.json").c_str(), [](){
-    return !_die;
-  });
 
   initRenderingEngineSDL(keypressEvent, windowEventCallback);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
-  addTextArea(device);
+  addTextArea();
   addStatusMessage();
   addLoaderArc();
 
-  if(!py.pythonCallMain([&py, &device](){
-    eventLoop(py, device, -1);
+  if(!py.pythonCallMain([&py](){
+    eventLoop(py, -1);
   })){
-    eventLoop(py, device, -1);
+    eventLoop(py, -1);
   }
   LOG(DEBUG, MAIN, "Exit\n");
   _task.join();
