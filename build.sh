@@ -104,7 +104,16 @@ function main(){
             -DHAVE_COMPILER__FUNCTION__=1 \
             -DHAVE_GETADDRINFO=1 \
             -DENABLE_CUSTOM_COMPILER_FLAGS=OFF \
-            -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DTHREADSAFE=ON -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_RC_COMPILER="$(which x86_64-w64-mingw32-windres)" -DDLLTOOL="$(which x86_64-w64-mingw32-dlltool)" -DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32 -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_INSTALL_PREFIX=../install-win \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_CLAR=OFF \
+            -DTHREADSAFE=ON \
+            -DCMAKE_SYSTEM_NAME=Windows \
+            -DCMAKE_C_COMPILER=$CC \
+            -DCMAKE_RC_COMPILER=$RESCOMP \
+            -DDLLTOOL=$DLLTOOL \
+            -DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32 \
+            -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+            -DCMAKE_INSTALL_PREFIX=../install-win \
             -G "Ninja" ..
         ninja --verbose
         ln -sf "../config.json" .

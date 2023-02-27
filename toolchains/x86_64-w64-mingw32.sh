@@ -2,9 +2,9 @@
 set -xe
 
 PREFIX=x86_64-w64-mingw32
-export CC=$PREFIX-gcc
-export CXX=$PREFIX-g++
-export CPP=$PREFIX-cpp
+export CC=$PREFIX-gcc-posix
+export CXX=$PREFIX-g++-posix
+export CPP=$PREFIX-cpp-posix
 export RANLIB=$PREFIX-ranlib
 export LD=$PREFIX-ld
 export AR=$PREFIX-ar
