@@ -116,6 +116,7 @@ if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")  
 endif()
 
+set(CURL_USE_OPENSSL ON CACHE BOOL "enable SSL functionality")
 ##############################
 add_library(${project} STATIC ${SOURCES})
 target_include_directories(${project} PRIVATE ${INC_DIRS})

@@ -1,4 +1,6 @@
+#include <atomic>
 #include <file_utils.h>
+#include <curl/curl.h>
 #include <debug_logger.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -30,7 +32,7 @@ static lv_obj_t * _label_serialnum;
 static lv_obj_t * _ta;
 static lv_obj_t * _arc;
 static lv_obj_t * _label_status;
-static bool _die;
+static std::atomic<bool> _die;
 enum SshStateE {
   SshState_None = 0,
   SshState_Connecting,
@@ -293,6 +295,140 @@ static PythonWrapper loadPython(int argc, char** argv)
 
 }//namespace
 
+/////////////////////////////////////////////////////////
+struct CurlContext
+{
+  CURLcode _res = (CURLcode) CURLM_UNKNOWN_OPTION;
+  CURL *_curl_handle = nullptr;
+  char *_memory = nullptr;
+  size_t _size = 0;
+  FILE *_pagefile = nullptr;
+  long _imageSize = 0;
+  long _curlopt_low_speed_time_sec = 0;
+  std::atomic<bool> &_die;
+
+  std::string _url;
+  unsigned long  _last_write_time_secs;
+  // std::atomic<bool> &_quit;
+  std::string _full_file_name;
+  long _starting_byte_to_download;
+
+  CurlContext(const std::string &url, 
+    const std::string &full_file_name, 
+    long starting_byte_to_download,
+    std::atomic<bool> &die)
+  : _pagefile(fopen("/tmp/foo", "a+b"))
+  , _url(url)
+  , _full_file_name(full_file_name)
+  , _starting_byte_to_download(starting_byte_to_download)
+  , _die(die)
+  {}
+};
+  
+static void 
+curlFinish(CurlContext ctx)
+{
+  LOG(DEBUG, MAIN, "curl cleanup started.\n");
+  free(ctx._memory);
+  LOG(DEBUG, MAIN, "ctx._memory freed.\n");
+  if (ctx._pagefile != 0)
+  {
+    fclose(ctx._pagefile);
+  }
+  LOG(DEBUG, MAIN, "after ctx._pagefile closed.\n");
+
+  // we are done with libcurl, so clean it up
+  curl_global_cleanup();
+  LOG(DEBUG, MAIN, "curl global cleanup done.\n");
+}
+
+
+static size_t 
+writeDataToFile(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+  CurlContext *ctx = (CurlContext *)stream;
+  if (ctx->_die){
+    return 0;
+  }
+  size_t bytes_written = fwrite(ptr, size, nmemb, (FILE *)ctx->_pagefile); 
+  if (bytes_written == 0){
+    LOG(FATAL, MAIN, "FAILED to write to file\n");
+  }
+  ctx->_last_write_time_secs =
+        std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now()
+          .time_since_epoch()).count();               
+  return bytes_written;
+}
+
+static void callCurl(CurlContext &ctx){
+    bool flagcurlFinish = false;  // internal flag
+
+    curl_global_init(CURL_GLOBAL_ALL);
+
+    // init the curl session
+    ctx._curl_handle = curl_easy_init();
+    LOG(DEBUG, MAIN, "inited curl\n");
+
+    // abort if slower than 30 bytes/sec during ctx._curlopt_low_speed_time seconds
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_LOW_SPEED_TIME, ctx._curlopt_low_speed_time_sec);
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_LOW_SPEED_LIMIT, 30L);
+    LOG(DEBUG, MAIN, "set to abort if slower than 30 bytes/sec during %d seconds\n", ctx._curlopt_low_speed_time_sec);
+
+    LOG(DEBUG, MAIN, "before set URL name %s\n", ctx._url.c_str());
+    
+    // specify URL to get
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_URL, ctx._url.c_str());
+    LOG(DEBUG, MAIN, "sfter set URL name %s\n", ctx._url.c_str());
+
+    if(ctx._starting_byte_to_download > 0){
+      curl_easy_setopt(ctx._curl_handle, CURLOPT_RESUME_FROM, ctx._starting_byte_to_download);
+    }
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_WRITEFUNCTION, writeDataToFile);
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_SSL_VERIFYPEER, false);   
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_SSL_VERIFYHOST, false);
+    // curl_easy_setopt(ctx._curl_handle, CURLOPT_SSL_VERIFYSTATUS, false);
+
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_easy_setopt(ctx._curl_handle, CURLOPT_USERPWD, "jenkins:jenkins"); //Your credentials goes here
+    // curl_setopt(ctx._curl_handle, CURLOPT_RETURNTRANSFER, true);
+
+
+    
+    LOG(DEBUG, MAIN, "set memory write callback\n");
+ 
+    if(ctx._pagefile) {
+      // We pass our 'ctx' struct to the callback function.
+      // The ctx is userdata.
+      curl_easy_setopt(ctx._curl_handle, CURLOPT_WRITEDATA, (void *)&ctx);
+      LOG(DEBUG, MAIN, "set write data\n");
+
+      // some servers do not like requests that are made without a user-agent
+      // field, so we provide one
+      curl_easy_setopt(ctx._curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+      LOG(DEBUG, MAIN, "set curl agent\n");
+
+      // get it!
+      ctx._res = curl_easy_perform(ctx._curl_handle);
+      LOG(DEBUG, MAIN, "After Performing downloading\n");
+      // fclose(ctx._pagefile);
+      curlFinish(ctx);
+      flagcurlFinish = true;
+    }
+
+    // check for errors
+    if (ctx._res != CURLE_OK){
+      // will be here if there is at least no internet connection from the very beginning of running this application.
+      // Example: error= Could't resolve host name.
+      LOG(WARNING, MAIN, "downloading ended with error=%s\n", curl_easy_strerror(ctx._res)); // FAILed
+      if (!flagcurlFinish){
+        // fclose(ctx._pagefile);
+        curlFinish(ctx);
+      }
+    }
+        
+    return;
+  }
+////////////////////////////
 extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
 {
   PROGRAM_INIT(argv[0], SDL_GetPrefPath("", APP_NAME));
@@ -307,6 +443,19 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
   addStatusMessage();
   addLoaderArc();
 
+//////////////////
+
+  std::string url("https://10.57.3.4:8080/job/nextgen/job/master/lastSuccessfulBuild/artifact/out/steno-docker-image%3Av21.tar.gz");
+  CurlContext ctx(url,  "/tmp/foo",  0, _die);
+  // curlContext_metadata._pagefile = fopen(full_metadata_file_name.c_str(), "a");
+  // curlContext_metadata._memory = (char *)malloc(1);
+  callCurl(ctx);
+  if (ctx._res != CURLE_OK){
+
+  }
+
+
+//////////////////
   if(!py.pythonCallMain([&py](){
     eventLoop(py, -1);
   })){
