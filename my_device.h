@@ -22,6 +22,7 @@ class MyDevice {
     void getSerialNumberFile(const std::string &local_file);
     void putSerialNumberFile(const std::string &local_file);
     void runCommand(const std::string &cmd);
+    const std::string &ip() const;
 
   private:
     void load(const char *config);

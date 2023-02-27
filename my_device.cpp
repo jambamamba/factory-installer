@@ -105,3 +105,8 @@ MyDevice::loadFromJson(cJSON* json){
     _password = cJSON_GetObjectItemCaseSensitive(device, "password")->valuestring;
     _serialnum_file = cJSON_GetObjectItemCaseSensitive(device, "serialnum_file")->valuestring;
 }
+
+const std::string &
+MyDevice::ip() const{
+    return _ip;
+}

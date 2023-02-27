@@ -31,29 +31,64 @@ static lv_obj_t * _ta;
 static lv_obj_t * _arc;
 static lv_obj_t * _label_status;
 static bool _die;
-enum StateE {
-  State_None = 0,
-  State_SshConnecting,
+enum SshStateE {
+  SshState_None = 0,
+  SshState_Connecting,
+  SshState_Connected,
+  SshState_SettingSerialNumber,
 };
 static std::thread _task;
 
-static StateE _state = State_None;
-static void showWaiting();
-static void hideWaiting();
 
-static void setDeviceSerialNum(MyDevice *device, const char *serialnum){
+static bool
+updateSerialNumberInJson(const std::string &local_serialnum_file, const std::string &serialnum){
+  cJSON* json = readJson(local_serialnum_file.c_str());
+  if(!json){
+    return false;
+  }
+  cJSON* serialnum_json = cJSON_GetObjectItemCaseSensitive(json, "Serial Number");
+  if(!serialnum_json){
+    return false;
+  }
+  if(!cJSON_SetValuestring(serialnum_json, serialnum.c_str())){
+    return false;
+  }
+  storeJsonToFile(cJSON_Print(json), local_serialnum_file.c_str());
+  return true;
+}
+
+static std::string _status_msg;
+static SshStateE _state = SshState_None;
+static void 
+setDeviceSerialNum(MyDevice *device, const char *serialnum){
   _task = std::thread([device, serialnum](){
     std::string workdir(SDL_GetPrefPath("", APP_NAME));
     std::string local_serialnum_file = workdir + "serial_number.json";
     LOG(DEBUG, MAIN, "CONNECTING ....\n");
-    _state = State_SshConnecting;
-    if(device->openSession()){
-      // device.runCommand("ls -alh . > /tmp/foobar");
-      device->getSerialNumberFile(local_serialnum_file);
+    _state = SshState_Connecting;
+    _status_msg = std::string("Connecting to ") + device->ip();
+    if(!device->openSession()){
+      _state = SshState_None;
+      _status_msg = std::string("Connection failed.\n") + 
+        std::string("Is the device with IP ") + device->ip() + 
+        std::string(" on your network?");
+        return;
+    }
+    _state = SshState_Connected;
+    _status_msg = std::string("Connected to ") + device->ip();
+    // device.runCommand("ls -alh . > /tmp/foobar");
+    device->getSerialNumberFile(local_serialnum_file);
+    if(FileUtils::fileExists(local_serialnum_file)){
+      if(!updateSerialNumberInJson(local_serialnum_file, serialnum)){
+      _state = SshState_None;
+      _status_msg = std::string("Failed to set serial number on device:\n") + device->ip();
+        return;
+      }
+      _state = SshState_SettingSerialNumber;
+      _status_msg = std::string("Setting serial number '") + std::string(serialnum) + "'\n" +
+        std::string(" to device ") + device->ip();
       device->putSerialNumberFile(local_serialnum_file);
     }
-    LOG(DEBUG, MAIN, "CONNECTING DONE @@@@@@@@@@@@....\n");
-    _state = State_None;
   });
 }
 
@@ -64,11 +99,10 @@ static void taEventCallback(lv_event_t * e){
 //    LOG(DEBUG, MAIN, "taEventCallback code: %i, target:%x, _ta:%x\n", code, lv_event_get_target(e), _ta);
     if(code == LV_EVENT_CLICKED 
       && lv_event_get_target(e)==_ta){
-        showWaiting();
-
+        MyDevice *device = static_cast<MyDevice*>(lv_event_get_user_data(e));
         const char * text = lv_textarea_get_text(_ta);
         LOG(DEBUG, MAIN, "taEventCallback text: %s\n", text);
-        setDeviceSerialNum(static_cast<MyDevice*>(lv_event_get_user_data(e)), text);
+        setDeviceSerialNum(device, text);
     }
 }
 static void addTextBox()
@@ -109,20 +143,9 @@ static void addTextArea(MyDevice &device)
 static void addStatusMessage()
 {
     _label_status = lv_label_create(lv_scr_act());
-    lv_label_set_text(_label_status, "Connecting........................");
-    lv_obj_align(_label_status, LV_ALIGN_TOP_MID, 0, 328);
+    lv_label_set_text(_label_status, "");
+    lv_obj_align(_label_status, LV_ALIGN_TOP_MID, 0, 148);
     lv_obj_set_size(_label_status, 330, 42);
-
-}
-
-static void showWaiting()
-{
-  lv_obj_clear_flag(_arc, LV_OBJ_FLAG_HIDDEN);
-}
-
-static void hideWaiting()
-{
-  lv_obj_add_flag(_arc, LV_OBJ_FLAG_HIDDEN);
 }
 
 static void addLoaderArc()
@@ -132,7 +155,6 @@ static void addLoaderArc()
   lv_arc_set_angles(_arc, 270, 270);
   lv_obj_align(_arc, LV_ALIGN_CENTER, 0, 0);
   // lv_obj_set_size(_arc, 0, 0);
-  hideWaiting();
 }
 
 static void keypressEvent(uint32_t key, uint32_t btn_id)
@@ -156,30 +178,54 @@ static void windowEventCallback(struct SDL_WindowEvent *window)
   }
 }
 
-static void eventLoop(PythonWrapper &py, int loop_count)
-{
-  static bool foo = false;
-  for (int i = 0; !_die && (loop_count < 0 || i < loop_count); ++i){
-    if(_state == State_SshConnecting){
+static void 
+updateArcAnlge() {
+  // LOG(DEBUG, MAIN, "SHOWING ....\n");
+  static int angle = 0;
+  lv_arc_set_end_angle(_arc, angle);
+  angle += 1;
+}
+
+static void     
+updateWithSshActivity(){
+  static SshStateE prev_state = SshState_None;
+  switch(_state){
+    case SshState_Connecting:
+      updateArcAnlge();
       LOG(DEBUG, MAIN, "WAITING ....\n");
-      if(!foo){
-        showWaiting();
+      if(prev_state != _state){
+        lv_obj_clear_flag(_arc, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(_label_status, _status_msg.c_str());
       }
-      foo = true;
-    }
-    else if(foo){
-      hideWaiting();
-      foo = false;
-    }
+      break;
+    case SshState_Connected:
+      if(prev_state != _state){
+        lv_obj_add_flag(_arc, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(_label_status, _status_msg.c_str());
+      }
+      break;
+    case SshState_SettingSerialNumber:
+      if(prev_state != _state){
+        lv_label_set_text(_label_status, _status_msg.c_str());
+      }
+      break;
+    case SshState_None:
+      if(prev_state != _state){
+        lv_obj_add_flag(_arc, LV_OBJ_FLAG_HIDDEN);
+        lv_label_set_text(_label_status, _status_msg.c_str());
+      }
+      break;
+  }
+  prev_state = _state;
+}
+
+static void 
+eventLoop(PythonWrapper &py, MyDevice &device, int loop_count)
+{
+  for (int i = 0; !_die && (loop_count < 0 || i < loop_count); ++i){
+    updateWithSshActivity();
     if(!py.eventLoop()){
       return;
-    }
-
-    {
-      // LOG(DEBUG, MAIN, "SHOWING ....\n");
-      static int angle = 0;
-      lv_arc_set_end_angle(_arc, angle);
-      angle += 1;
     }
     lv_timer_handler();
     usleep(10*1000);
@@ -253,13 +299,13 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
   addTextArea(device);
-  addLoaderArc();
   addStatusMessage();
+  addLoaderArc();
 
-  if(!py.pythonCallMain([&py](){
-    eventLoop(py, -1);
+  if(!py.pythonCallMain([&py, &device](){
+    eventLoop(py, device, -1);
   })){
-    eventLoop(py, -1);
+    eventLoop(py, device, -1);
   }
   LOG(DEBUG, MAIN, "Exit\n");
   _task.join();
