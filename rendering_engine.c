@@ -9,7 +9,8 @@
 #define SCREEN_VER_RES MONITOR_VER_RES
 
 static KeypressCallback _keypress_callback = 0;
-static void sdl_keyboard_read_override(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
+static void 
+sdlKeyboardReadOverride(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 {
   sdl_keyboard_read(indev_drv, data);
   if(data->state == LV_INDEV_STATE_PRESSED){
@@ -19,7 +20,8 @@ static void sdl_keyboard_read_override(lv_indev_drv_t * indev_drv, lv_indev_data
   }
 }
 
-uint32_t custom_tick_get(void)
+uint32_t 
+custom_tick_get(void)
 {
   static uint64_t start_ms = 0;
   if (start_ms == 0)
@@ -43,7 +45,8 @@ uint32_t custom_tick_get(void)
  * @param data unused
  * @return never return
  */
-static int tick_thread(void *data) {
+static int 
+tickThread(void *data) {
     (void)data;
 
     while(1) { 
@@ -60,18 +63,19 @@ static int tick_thread(void *data) {
  */
 lv_disp_t *_display;
 lv_disp_drv_t _display_driver;
-void init_rendering_engine_sdl(KeypressCallback keypress_callback)
+void 
+initRenderingEngineSDL(KeypressCallback keypress_cb, WindowEventCallback window_event_cb)
 {
-  _keypress_callback = keypress_callback;
+  _keypress_callback = keypress_cb;
   /* Use the 'monitor' driver which creates window on PC's monitor to simulate a display*/
   // monitor_init();
   lv_init();
-  sdl_init();
+  sdl_init(window_event_cb);
   // SDL_ShowCursor(false);
   /* Tick init.
    * You have to call 'lv_tick_inc()' in periodically to inform LittelvGL about
    * how much time were elapsed Create an SDL thread to do this*/
-  // SDL_CreateThread(tick_thread, "tick", NULL);
+  // SDL_CreateThread(tickThread, "tick", NULL);
 
   /*Create a display buffer*/
   static lv_disp_draw_buf_t disp_buf1 = {0};
@@ -98,7 +102,7 @@ void init_rendering_engine_sdl(KeypressCallback keypress_callback)
   static lv_indev_drv_t indev_drv_2;
   lv_indev_drv_init(&indev_drv_2); /*Basic initialization*/
   indev_drv_2.type = LV_INDEV_TYPE_KEYPAD;
-  indev_drv_2.read_cb = sdl_keyboard_read_override;//sdl_keyboard_read;
+  indev_drv_2.read_cb = sdlKeyboardReadOverride;//sdl_keyboard_read;
   lv_indev_t *kb_indev = lv_indev_drv_register(&indev_drv_2);
   lv_indev_set_group(kb_indev, g);
   // sdl_mousewheel_init();

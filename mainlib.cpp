@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <thread>
 
 #include "json_utils.h"
 #include "rendering_engine.h"
@@ -25,24 +26,35 @@
 LOG_CATEGORY(MAIN, "MAIN")
 
 namespace {
-static lv_obj_t * _label;
+static lv_obj_t * _label_serialnum;
 static lv_obj_t * _ta;
+static lv_obj_t * _arc;
+static lv_obj_t * _label_status;
+static bool _die;
 enum StateE {
   State_None = 0,
   State_SshConnecting,
 };
+static std::thread _task;
+
 static StateE _state = State_None;
+static void showWaiting();
+static void hideWaiting();
 
 static void setDeviceSerialNum(MyDevice *device, const char *serialnum){
-  std::string workdir(SDL_GetPrefPath("", APP_NAME));
-  std::string local_serialnum_file = workdir + "serial_number.json";
-  _state = State_SshConnecting;
-  if(device->openSession()){
-    // device.runCommand("ls -alh . > /tmp/foobar");
-    device->getSerialNumberFile(local_serialnum_file);
-    device->putSerialNumberFile(local_serialnum_file);
-  }
-  _state = State_None;
+  _task = std::thread([device, serialnum](){
+    std::string workdir(SDL_GetPrefPath("", APP_NAME));
+    std::string local_serialnum_file = workdir + "serial_number.json";
+    LOG(DEBUG, MAIN, "CONNECTING ....\n");
+    _state = State_SshConnecting;
+    if(device->openSession()){
+      // device.runCommand("ls -alh . > /tmp/foobar");
+      device->getSerialNumberFile(local_serialnum_file);
+      device->putSerialNumberFile(local_serialnum_file);
+    }
+    LOG(DEBUG, MAIN, "CONNECTING DONE @@@@@@@@@@@@....\n");
+    _state = State_None;
+  });
 }
 
 static void taEventCallback(lv_event_t * e){ 
@@ -52,6 +64,8 @@ static void taEventCallback(lv_event_t * e){
 //    LOG(DEBUG, MAIN, "taEventCallback code: %i, target:%x, _ta:%x\n", code, lv_event_get_target(e), _ta);
     if(code == LV_EVENT_CLICKED 
       && lv_event_get_target(e)==_ta){
+        showWaiting();
+
         const char * text = lv_textarea_get_text(_ta);
         LOG(DEBUG, MAIN, "taEventCallback text: %s\n", text);
         setDeviceSerialNum(static_cast<MyDevice*>(lv_event_get_user_data(e)), text);
@@ -76,8 +90,8 @@ static void addTextBox()
     lv_obj_t * obj = lv_obj_create(lv_scr_act());
     lv_obj_add_style(obj, &style, 0);
 
-    _label = lv_label_create(obj);
-    lv_label_set_text(_label, "Serial#");
+    _label_serialnum = lv_label_create(obj);
+    lv_label_set_text(_label_serialnum, "Serial#");
 }
 
 static void addTextArea(MyDevice &device)
@@ -92,33 +106,86 @@ static void addTextArea(MyDevice &device)
     lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, &device);//also triggered when Enter key is pressed
 }
 
+static void addStatusMessage()
+{
+    _label_status = lv_label_create(lv_scr_act());
+    lv_label_set_text(_label_status, "Connecting........................");
+    lv_obj_align(_label_status, LV_ALIGN_TOP_MID, 0, 328);
+    lv_obj_set_size(_label_status, 330, 42);
+
+}
+
+static void showWaiting()
+{
+  lv_obj_clear_flag(_arc, LV_OBJ_FLAG_HIDDEN);
+}
+
+static void hideWaiting()
+{
+  lv_obj_add_flag(_arc, LV_OBJ_FLAG_HIDDEN);
+}
+
+static void addLoaderArc()
+{
+  _arc = lv_arc_create(lv_scr_act());
+  lv_arc_set_bg_angles(_arc, 0, 360);
+  lv_arc_set_angles(_arc, 270, 270);
+  lv_obj_align(_arc, LV_ALIGN_CENTER, 0, 0);
+  // lv_obj_set_size(_arc, 0, 0);
+  hideWaiting();
+}
+
 static void keypressEvent(uint32_t key, uint32_t btn_id)
 {
     printf( "@@@@@@@@ %i:%i\n", key, btn_id );
     if(key == 10 && btn_id == 0){
       //osm todo: send serial number from _ta to device
     }
-    // const char* p = lv_label_get_text(_label);
+    // const char* p = lv_label_get_text(_label_serialnum);
     // if(p){
     //   std::string text(p);
     //   text.push_back(key);
-    //   lv_label_set_text(_label, text.c_str());
+    //   lv_label_set_text(_label_serialnum, text.c_str());
     // }
 }
+static void windowEventCallback(struct SDL_WindowEvent *window)
+{
+  if(window->event == SDL_WINDOWEVENT_CLOSE){
+    _die = true;
+    _task.join();
+  }
+}
+
 static void eventLoop(PythonWrapper &py, int loop_count)
 {
-  for (int i = 0; loop_count < 0 || i < loop_count; ++i){
+  static bool foo = false;
+  for (int i = 0; !_die && (loop_count < 0 || i < loop_count); ++i){
     if(_state == State_SshConnecting){
       LOG(DEBUG, MAIN, "WAITING ....\n");
+      if(!foo){
+        showWaiting();
+      }
+      foo = true;
+    }
+    else if(foo){
+      hideWaiting();
+      foo = false;
     }
     if(!py.eventLoop()){
       return;
     }
-    /* Periodically call the lv_task handler.
-       * It could be done in a timer interrupt or an OS task too.*/
+
+    {
+      // LOG(DEBUG, MAIN, "SHOWING ....\n");
+      static int angle = 0;
+      lv_arc_set_end_angle(_arc, angle);
+      angle += 1;
+    }
     lv_timer_handler();
-    usleep(1000);
+    usleep(10*1000);
   }
+    // SDL_Delay
+
 }
 
 static std::string configPath(const std::string &filename)
@@ -178,15 +245,16 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
   LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
 
   PythonWrapper py = loadPython(argc, argv);
-  MyDevice device(configPath("config.json").c_str(), [&py](){
-    eventLoop(py, 1);
-    return true;
+  MyDevice device(configPath("config.json").c_str(), [](){
+    return !_die;
   });
 
-  init_rendering_engine_sdl(keypressEvent);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
+  initRenderingEngineSDL(keypressEvent, windowEventCallback);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
   addTextArea(device);
+  addLoaderArc();
+  addStatusMessage();
 
   if(!py.pythonCallMain([&py](){
     eventLoop(py, -1);
@@ -194,5 +262,6 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv)
     eventLoop(py, -1);
   }
   LOG(DEBUG, MAIN, "Exit\n");
+  _task.join();
   return 0;
 }

@@ -7,7 +7,8 @@ extern "C" {
 #endif
 
 typedef void (*KeypressCallback)(uint32_t key, uint32_t btn_id);
-void init_rendering_engine_sdl(KeypressCallback keypress_callback);
+typedef void (*WindowEventCallback)(struct SDL_WindowEvent *e);
+void initRenderingEngineSDL(KeypressCallback keypress_cb, WindowEventCallback window_event_cb);
 
 #ifdef __cplusplus
 }
