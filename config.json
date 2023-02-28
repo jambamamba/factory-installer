@@ -13,6 +13,8 @@
       "local_file_name": "/tmp/01-new-developer-setup-download-virtual-box.mp4",
       "resume_broken_download" : "true",
       "basic_auth_username":"jenkins",
-      "basic_auth_password":"jenkins"
+      "basic_auth_password":"jenkins",
+      "verify_peer":"false",
+      "verify_host":"false"
    }
 }

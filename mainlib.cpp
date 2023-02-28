@@ -345,18 +345,23 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
   _task_curldownload = std::thread([](){
     CurlHelper curl_helper(loadJsonConfig(configPath("config.json")));
     _state = SshState_DownloadingPayload;
-    curl_helper.startSession([](long curl_result, long http_status_code, ssize_t bytes_written, ssize_t content_length){
+    curl_helper.startSession([](long curl_result, long http_status_code, ssize_t bytes_written, ssize_t content_length, const std::string &errmsg){
       // if(curl_result == CURLE_OK){
-        std::string msg("Downloaded ");
-        if(content_length > 0 && bytes_written < content_length){
+        std::string msg;
+        if(errmsg.size()){
+          msg += "CURL Error ";
+          msg += errmsg;
+        }
+        else if(content_length > 0 && bytes_written < content_length){
           char percent[128] = {0};
           snprintf(percent, sizeof(percent)-1, "%.0f%%", bytes_written * 100. / content_length);
+          msg = "Downloaded ";
           msg += percent;
         }
         _status_msg = msg;
       return !_die;
     });
-    _status_msg = "";
+    // _status_msg = "";
     _state = SshState_None;
   });
 
