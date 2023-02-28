@@ -33,6 +33,7 @@ namespace {
 static lv_obj_t * _label_serialnum;
 static lv_obj_t * _ta;
 static lv_obj_t * _arc;
+static lv_obj_t * _progress_bar;
 static lv_obj_t * _label_status;
 static std::atomic<bool> _die;
 enum SshStateE {
@@ -72,6 +73,7 @@ updateSerialNumberInJson(const std::string &local_serialnum_file, const std::str
   return true;
 }
 
+static long _download_percent = 0;
 static std::string _status_msg;
 static SshStateE _state = SshState_None;
 
@@ -196,7 +198,8 @@ static void addTextArea()
     lv_obj_add_event_cb(_ta, taEventCallback, LV_EVENT_CLICKED, nullptr);//also triggered when Enter key is pressed
 }
 
-static void addStatusMessage()
+static void 
+addStatusMessage()
 {
     _label_status = lv_label_create(lv_scr_act());
     lv_label_set_text(_label_status, "");
@@ -204,7 +207,8 @@ static void addStatusMessage()
     lv_obj_set_size(_label_status, 330, 42);
 }
 
-static void addLoaderArc()
+static void 
+addLoaderArc()
 {
   _arc = lv_arc_create(lv_scr_act());
   lv_arc_set_bg_angles(_arc, 0, 360);
@@ -212,6 +216,17 @@ static void addLoaderArc()
   lv_obj_align(_arc, LV_ALIGN_CENTER, 0, 0);
   // lv_obj_set_size(_arc, 0, 0);
 }
+
+static void 
+addProgressBar()
+{
+  _progress_bar = lv_bar_create(lv_scr_act());
+  lv_obj_set_size(_progress_bar, 200, 20);
+  lv_obj_align(_progress_bar, LV_ALIGN_CENTER, 0, 0);
+  // lv_bar_set_anim_time(_progress_bar, 2000);
+  lv_bar_set_value(_progress_bar, 0, LV_ANIM_ON);
+}
+
 
 static void keypressEvent(uint32_t key, uint32_t btn_id)
 {
@@ -267,7 +282,9 @@ updateWithSshActivity(){
       break;
     case SshState_DownloadingPayload:
       if(_status_msg.size()){
+        lv_obj_add_flag(_arc, LV_OBJ_FLAG_HIDDEN);
         lv_label_set_text(_label_status, _status_msg.c_str());
+        lv_bar_set_value(_progress_bar, _download_percent, LV_ANIM_ON);
       }
       break;
     case SshState_None:
@@ -336,6 +353,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
   addTextArea();
   addStatusMessage();
   addLoaderArc();
+  addProgressBar();
 
 //////////////////
 
@@ -352,9 +370,10 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
           msg += "CURL Error ";
           msg += errmsg;
         }
-        else if(content_length > 0 && bytes_written < content_length){
+        if(content_length > 0 && bytes_written < content_length){
           char percent[128] = {0};
-          snprintf(percent, sizeof(percent)-1, "%.0f%%", bytes_written * 100. / content_length);
+          _download_percent = bytes_written * 100. / content_length;
+          snprintf(percent, sizeof(percent)-1, "%i%%", _download_percent);
           msg = "Downloaded ";
           msg += percent;
         }
