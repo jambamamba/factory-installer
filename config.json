@@ -5,6 +5,14 @@
       "port": "22",
       "user": "root",
       "password": "b",
-      "serialnum_file":"/opt/usr_data/serial_number.json"
+      "serialnum_file":"/opt/usr_data/serial_number.json",
+      "download_dir":"/opt/usr_data"
+   },
+   "server": {
+      "url":"https://10.57.3.4/wiki/images/1/13/01-new-developer-setup-download-virtual-box.mp4",
+      "local_file_name": "/tmp/01-new-developer-setup-download-virtual-box.mp4",
+      "resume_broken_download" : "true",
+      "basic_auth_username":"jenkins",
+      "basic_auth_password":"jenkins"
    }
 }

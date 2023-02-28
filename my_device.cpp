@@ -25,23 +25,13 @@
 
 LOG_CATEGORY(MAIN, "MAIN")
 
-MyDevice::MyDevice(const char* config, std::function <bool()> event_loop)
+MyDevice::MyDevice(const cJSON* config, std::function <bool()> event_loop)
 : _ssh_session([](const std::string &title, const std::string &message){
     LOG(DEBUG, MAIN, "%s:%s\n", title.c_str(), message.c_str());
     })
 , _scp_session(_ssh_session.GetSession())
 , _event_loop(event_loop){
-    load(config);
-}
-
-void 
-MyDevice::load(const char *config){
-    cJSON* json = readJson(config);
-
-    if(cJSON_GetObjectItemCaseSensitive(json, "version")){
-    char *version = cJSON_GetObjectItemCaseSensitive(json, "version")->valuestring;
-    loadFromJson(json);
-    }
+    loadFromJson(config);
 }
 
 bool 
@@ -97,13 +87,14 @@ MyDevice::runCommand(const std::string &cmd){
 }
 
 void 
-MyDevice::loadFromJson(cJSON* json){
-    cJSON *device = cJSON_GetObjectItemCaseSensitive(json, "device");
+MyDevice::loadFromJson(const cJSON* config){
+    cJSON *device = cJSON_GetObjectItemCaseSensitive(config, "device");
     _ip = cJSON_GetObjectItemCaseSensitive(device, "ip")->valuestring;
     _port = intFromJsonValue(cJSON_GetObjectItemCaseSensitive(device, "port"), 65536);
     _user = cJSON_GetObjectItemCaseSensitive(device, "user")->valuestring;
     _password = cJSON_GetObjectItemCaseSensitive(device, "password")->valuestring;
     _serialnum_file = cJSON_GetObjectItemCaseSensitive(device, "serialnum_file")->valuestring;
+    _download_dir = cJSON_GetObjectItemCaseSensitive(device, "download_dir")->valuestring;
 }
 
 const std::string &
