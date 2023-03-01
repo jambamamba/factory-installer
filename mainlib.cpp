@@ -80,15 +80,19 @@ static SshStateE _state = SshState_None;
 static std::string configPath(const std::string &filename)
 {
     std::string path = SDL_GetPrefPath("", FileUtils::getProgramName().c_str());
-    LOG(DEBUG, MAIN, "configPath, 1-trying path %s\n", path.c_str());  
-    if(FileUtils::fileExists(std::string(path + filename))){
-      return FileUtils::toLinuxPathSeparators(path + filename);
+    if(path.size()){
+      LOG(DEBUG, MAIN, "configPath, 1-trying path %s\n", path.c_str());  
+      if(FileUtils::fileExists(std::string(path + filename))){
+        return FileUtils::toLinuxPathSeparators(path + filename);
+      }
     }
 
     path = FileUtils::getProgramPath();
-    LOG(DEBUG, MAIN, "configPath, 2-trying path %s\n", (path + "/config.json").c_str());  
-    if(FileUtils::fileExists(path + "/config.json")){
-      return FileUtils::toLinuxPathSeparators(path + "/config.json");
+    if(path.size()){
+      LOG(DEBUG, MAIN, "configPath, 2-trying path %s\n", (path + "/config.json").c_str());  
+      if(FileUtils::fileExists(path + "/config.json")){
+        return FileUtils::toLinuxPathSeparators(path + "/config.json");
+      }
     }
 
     LOG(DEBUG, MAIN, "configPath, 3-trying path %s\n", filename.c_str());  
@@ -366,11 +370,17 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
     curl_helper.startSession([](long curl_result, long http_status_code, ssize_t bytes_written, ssize_t content_length, const std::string &errmsg){
       // if(curl_result == CURLE_OK){
         std::string msg;
-        if(errmsg.size()){
-          msg += "CURL Error ";
+        if((curl_result > 0 || errmsg.size())
+          && curl_result != CURLE_COULDNT_RESOLVE_HOST
+          && http_status_code != 416
+          ){
+          msg += "HTTP: ";
+          msg += std::to_string(http_status_code);
+          msg += "\nCURL:";
           msg += errmsg;
+          LOG(DEBUG, MAIN, "http_status_code: %i, curl_result %i, %s\n", http_status_code, curl_result, errmsg.c_str());
         }
-        if(content_length > 0 && bytes_written < content_length){
+        else if(content_length > 0 && bytes_written <= content_length){
           char percent[128] = {0};
           _download_percent = bytes_written * 100. / content_length;
           snprintf(percent, sizeof(percent)-1, "%i%%", _download_percent);
@@ -381,7 +391,7 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
       return !_die;
     });
     // _status_msg = "";
-    _state = SshState_None;
+    // _state = SshState_None;
   });
 
 //////////////////

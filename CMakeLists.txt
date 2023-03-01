@@ -19,17 +19,14 @@ add_compile_definitions(APP_NAME="${project}")
 if (MINGW)
    find_package(SDL2 REQUIRED)
 endif()
-if (MINGW)
-   add_compile_definitions(DATA_DIR="c:/repos/factory-installer")
-   set(BUILD_STATIC_LIB OFF)
-   add_subdirectory(libssh)
-   set(BUILD_STATIC_LIB ON)
-else()
-   add_compile_definitions(DATA_DIR="/home/oosman/repos/factory-installer")
-   add_subdirectory(libssh)
-endif()
 add_subdirectory(lvgl-libraries)
 add_subdirectory(utils)
+
+if (MINGW)
+   add_compile_definitions(DATA_DIR="c:/repos/factory-installer")
+else()
+   add_compile_definitions(DATA_DIR="/home/oosman/repos/factory-installer")
+endif()
 
 set (SOURCES
    mainlib.cpp
@@ -47,8 +44,10 @@ set (INC_DIRS
    ${PROJECT_SOURCE_DIR}
    ${PROJECT_SOURCE_DIR}/.. 
    ${CMAKE_SOURCE_DIR}/utils
+   ${CMAKE_SOURCE_DIR}/utils/libssh/include/
+   ${CMAKE_BINARY_DIR}/utils/libssh/include/
+   ${CMAKE_SOURCE_DIR}/utils/curl/include/
    ${CMAKE_SOURCE_DIR}/lvgl-libraries/
-   ${CMAKE_BINARY_DIR}/libssh/include/
    ${THIRD_PARTY_LIB_DIR}
    )
 if (MINGW)
@@ -116,7 +115,6 @@ if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")  
 endif()
 
-set(CURL_USE_OPENSSL ON CACHE BOOL "enable SSL functionality")
 ##############################
 add_library(${project} STATIC ${SOURCES})
 target_include_directories(${project} PRIVATE ${INC_DIRS})

@@ -94,6 +94,9 @@ function main(){
         fi
         cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../toolchains/x86_64-w64-mingw32.cmake \
             -DCMAKE_MODULE_PATH=$(pwd)/../cmake-modules \
+            -DCMAKE_PREFIX_PATH=$(pwd)/../cmake-modules \
+            -DCMAKE_INSTALL_BINDIR=$(pwd) \
+            -DCMAKE_INSTALL_LIBDIR=$(pwd) \
             -DCMAKE_SKIP_RPATH=TRUE \
             -DCMAKE_SKIP_INSTALL_RPATH=TRUE \
             -DWIN32=TRUE \
@@ -123,6 +126,7 @@ function main(){
         # do this if on Windows: 
         #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
+        cp -f utils/libssh/src/libssh.dll .
         cp -f ../utils/python311/python311.dll .
         cp -f /tmp/zlib-1.2.13/zlib1.dll .
         cp -f /tmp/openssl-1.1.1t/libcrypto-1_1-x64.dll .

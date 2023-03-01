@@ -13,6 +13,9 @@ set(CMAKE_RC_COMPILER "${PREFIX}-windres")
 set(CMAKE_INSTALL_LIBDIR "/usr/lib")
 set(CMAKE_USE_WIN32_THREADS_INIT TRUE)
 
+set(CURL_USE_LIBSSH2 OFF)
+set(CURL_USE_LIBSSH ON)
+
 set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES /usr/lib/gcc/${PREFIX}/9.3-posix/)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libstdc++ -static-libgcc")
