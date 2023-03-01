@@ -33,10 +33,6 @@ set (SOURCES
    my_device.h
    my_device.cpp
    rendering_engine.c
-   ssh_session.h
-   ssh_session.cpp
-   scp_session.h
-   scp_session.cpp
 )
 
 set (INC_DIRS
@@ -44,9 +40,6 @@ set (INC_DIRS
    ${PROJECT_SOURCE_DIR}
    ${PROJECT_SOURCE_DIR}/.. 
    ${CMAKE_SOURCE_DIR}/utils
-   ${CMAKE_SOURCE_DIR}/utils/libssh/include/
-   ${CMAKE_BINARY_DIR}/utils/libssh/include/
-   ${CMAKE_SOURCE_DIR}/utils/curl/include/
    ${CMAKE_SOURCE_DIR}/lvgl-libraries/
    ${THIRD_PARTY_LIB_DIR}
    )
