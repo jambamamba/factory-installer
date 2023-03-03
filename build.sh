@@ -9,92 +9,47 @@ function parseArgs(){
    done
 }
 
-function buildZlib(){
-    if [ -f "/tmp/zlib-1.2.13/zlib1.dll" ]; then 
-        export ZLIB_LIBRARY=/tmp/zlib-1.2.13/
-        export ZLIB_INCLUDE_DIR=/tmp/zlib-1.2.13/
-        return
-    fi
-    pushd /tmp
-    wget https://www.zlib.net/zlib-1.2.13.tar.gz
-    tar xfz zlib-1.2.13.tar.gz
-    pushd zlib-1.2.13
-    sed -e 's/^PREFIX =.*$/PREFIX = x86_64-w64-mingw32-/' -i win32/Makefile.gcc
-    make -f win32/Makefile.gcc
-    BINARY_PATH=$PWD/../mingw64/bin \
-    INCLUDE_PATH=$PWD/../mingw64/include \
-    LIBRARY_PATH=$PWD/../mingw64/lib \
-    make -f win32/Makefile.gcc install SHARED_MODE=1
-    popd
-    popd
-}
-
-function buildOpenSSL(){
-    if [ -f "/tmp/openssl-1.1.1t/apps/libssl-1_1-x64.dll" ] &&  [ -f "/tmp/openssl-1.1.1t/apps/libcrypto-1_1-x64.dll" ]; then return; fi
-    pushd /tmp
-    wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
-    tar xfz openssl-1.1.1t.tar.gz
-    pushd openssl-1.1.1t
-    #CROSS_COMPILE="x86_64-w64-mingw32-" \
-    ./Configure mingw64 \
-                no-asm \
-                shared \
-                --openssldir=$PWD/../mingw64
-    VERBOSE=1 make -j
-    popd
-    popd
-}
-
-function downloadSDL(){
-    pushd /tmp
-    if [ ! -f "SDL2-devel-2.26.3-mingw.tar.gz" ]; then
-        wget https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-devel-2.26.3-mingw.tar.gz
-    fi
-    if [ ! -d "SDL2-2.26.3" ]; then
-        tar xfz SDL2-devel-2.26.3-mingw.tar.gz
-    fi
-    popd
-}
-
 function main(){
     local target=""
     parseArgs $@
 
     if [ "$target" == "x86" ]; then #host linux, target linux
+        local builddir="$(pwd)/x86-build/utils"
         mkdir -p x86-build
-        pushd x86-build
         if [ "$clean" == "true" ]; then
-            rm -fr *
+            rm -fr x86-build/*
         fi
-        cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..
+        pushd utils
+        ./install-libs.sh target="$target" builddir="${builddir}" clean="$clean"
+        popd
+        pushd x86-build
+        cmake -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_MODULE_PATH=$(pwd)/../utils/cmake-modules \
+            -DCMAKE_PREFIX_PATH=$(pwd)/../utils/cmake-modules \
+            -G Ninja ..
         ninja --verbose
         ln -sf "../config.json" .
         ln -sf "../config.json" "/home/$USER/.local/share/app-factory-installer/config.json"
         ln -sf "../py/main.py" .
         ln -sf "../py/main.py" "/home/$USER/.local/share/app-factory-installer/main.py"
+        rsync -uav utils/zlib/libz.so* .
+        rsync -uav utils/openssl/libcrypto.so* .
+        rsync -uav utils/openssl/libssl.so* .
+        rsync -uav lib/libssh.so* .
     elif [ "$target" == "mingw" ]; then #host linux, target windows
-    	source ./toolchains/x86_64-w64-mingw32.sh
-        #sudo apt-get install -y mingw-w64 \
-            # mingw-w64-common \
-            # mingw-w64-tools \
-            # mingw-w64-i686-dev \
-            # mingw-w64-x86-64-dev
-
-        downloadSDL
-        #https://github.com/curl/curl/issues/1492
-        buildZlib
-        buildOpenSSL
-
+        local builddir="$(pwd)/mingw-build/utils"
         mkdir -p mingw-build
-        pushd mingw-build
-        # ninja --verbose -j1; exit 0
-
         if [ "$clean" == "true" ]; then
-            rm -fr *
+            rm -fr mingw-build/*
         fi
-        cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../toolchains/x86_64-w64-mingw32.cmake \
-            -DCMAKE_MODULE_PATH=$(pwd)/../cmake-modules \
-            -DCMAKE_PREFIX_PATH=$(pwd)/../cmake-modules \
+        pushd utils
+        source ./toolchains/x86_64-w64-mingw32.sh
+        ./install-libs.sh target="$target" builddir="${builddir}" clean="$clean"
+        popd
+        pushd mingw-build
+        cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../utils/toolchains/x86_64-w64-mingw32.cmake \
+            -DCMAKE_MODULE_PATH=$(pwd)/../utils/cmake-modules \
+            -DCMAKE_PREFIX_PATH=$(pwd)/../utils/cmake-modules \
             -DCMAKE_INSTALL_BINDIR=$(pwd) \
             -DCMAKE_INSTALL_LIBDIR=$(pwd) \
             -DCMAKE_SKIP_RPATH=TRUE \
@@ -126,14 +81,25 @@ function main(){
         # do this if on Windows: 
         #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
-        cp -f utils/libssh/src/libssh.dll .
-        cp -f ../utils/python311/python311.dll .
-        cp -f /tmp/zlib-1.2.13/zlib1.dll .
-        cp -f /tmp/openssl-1.1.1t/libcrypto-1_1-x64.dll .
-        cp -f /tmp/openssl-1.1.1t/libssl-1_1-x64.dll .
-        cp -f /tmp/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
+        rm -f vcruntime140.dll
+        rm -f vcruntime140_1.dll
+        cp -f utils/zlib/libzlib1.dll libzlib.dll 
+        cp -f utils/openssl/libcrypto-1_1-x64.dll .
+        cp -f utils/openssl/libssl-1_1-x64.dll .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
+        cp -f ../utils/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
+        cp -f ../utils/wpython/*.dll .
+
+        mkdir -p factory-installer
+        rm -fr factory-installer/*
+        cp *dll factory-installer/
+        cp ../config.json factory-installer/
+        cp app-factory-installer.exe factory-installer/
+        rm -f factory-installer.zip
+        zip factory-installer.zip factory-installer/*
+        rm -fr factory-installer
+
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build
@@ -161,4 +127,4 @@ function main(){
     fi
 }
 
-main $@
+time main $@

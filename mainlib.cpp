@@ -319,7 +319,7 @@ eventLoop(PythonWrapper &py, int loop_count)
 static PythonWrapper loadPython(int argc, char** argv)
 {
   PythonWrapper py;
-  if(py.pythonInit(argc, argv, configPath("cmain.py").c_str())){
+  if(py.pythonInit(argc, argv, configPath("py/main.py").c_str())){
     // py.registerTouchWidgetProcs(
     //   [](const char* widget_id){
     //     // ScreenManager::getScreenManager()->loadScreenById(widget_id);

@@ -5,15 +5,14 @@
 #cmake -G "MSYS Makefiles" ..; make -j
 #PATH=$PATH:/c/repos/factory-installer/x86-build/libssh/src/ ./app-factory-installer.exe
 #on linux, building for windows:
-#cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/x86_64-w64-mingw32.cmake -G Ninja ..
+#cmake -DCMAKE_TOOLCHAIN_FILE=../utils/toolchains/x86_64-w64-mingw32.cmake -G Ninja ..
 
 cmake_minimum_required(VERSION 3.10)
 set (project "factory-installer")
 project(${project})
 
-OPTION(WITH_EXAMPLES "" OFF)
-SET(WITH_EXAMPLES OFF CACHE BOOL "Dont build LibSSH Examples")
-SET(BUILD_STATIC_LIB ON CACHE BOOL "Build static library")
+set(CMAKE_BUILD_TYPE "Debug")
+option(WITH_EXAMPLES "" OFF)
 
 add_compile_definitions(APP_NAME="${project}")
 if (MINGW)
@@ -45,10 +44,8 @@ set (INC_DIRS
    )
 if (MINGW)
    set (INC_DIRS ${INC_DIRS} 
-      ${CMAKE_SOURCE_DIR}/utils/python311/include
-#SDL2/SDL.h:      
-#      /usr/include
-      /tmp/SDL2-2.26.3/x86_64-w64-mingw32/include/ 
+      ${CMAKE_SOURCE_DIR}/utils/wpython/include
+      ${CMAKE_SOURCE_DIR}/utils/SDL2-2.26.3/x86_64-w64-mingw32/include
       )
 endif()
 
@@ -56,25 +53,28 @@ set (COMPILE_DEFINITIONS LV_CONF_INCLUDE_SIMPLE)
 
 set(LIBS
    lvgl 
-   utils
    ssh
+   utils
    pthread
 )
 
 if (MINGW)
-   set (LIBS ${LIBS} python311 )
+   set (LIBS ${LIBS} python312 )
 else()
    set (LIBS ${LIBS} python3.12)
 endif()
 
+find_package(OpenSSL REQUIRED)
 set(LINK_DIRECTORIES
    ${CMAKE_BINARY_DIR}
-   ${CMAKE_BINARY_DIR}/libssh/src
+   ${OPENSSL_LIBRARY_DIR}
+   ${ZLIB_ROOT}
 )
 if (MINGW)
    set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
-      ${CMAKE_SOURCE_DIR}/utils/python311 /mingw64/bin/ 
-      /tmp/SDL2-2.26.3/x86_64-w64-mingw32/bin/
+      /mingw64/bin/ 
+      ${CMAKE_SOURCE_DIR}/utils/wpython 
+      ${CMAKE_SOURCE_DIR}/utils/SDL2-2.26.3/x86_64-w64-mingw32/bin
       )
 else()
    set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
@@ -95,8 +95,6 @@ if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
    set(LINK_DIRECTORIES
       ${LINK_DIRECTORIES}
       ${SDL_LIB_DIR}
-      ${OPENSSL_LIBRARIES}
-      ${ZLIB_ROOT}
    )
    set (COMPILE_DEFINITIONS 
       ${COMPILE_DEFINITIONS} 
