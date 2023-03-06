@@ -9,6 +9,37 @@ function parseArgs(){
    done
 }
 
+function packageForWindows(){
+    parseArgs $@
+    mkdir -p factory-installer
+    rm -fr factory-installer/*
+    cp *dll factory-installer/
+    cp app-factory-installer.exe factory-installer/
+    cp ../config.json factory-installer/
+    rm -f factory-installer/vcruntime*.dll
+    rm -f factory-installer.zip
+    zip factory-installer.zip factory-installer/*
+    rm -fr factory-installer
+}
+
+function packageForUbuntu(){
+    parseArgs $@
+    mkdir -p factory-installer
+    rm -fr factory-installer/*
+
+    rsync -uav utils/cpython/build/x86-build/libpython3.12.so.1.0 factory-installer/
+    rsync -uav libssh.so.4 factory-installer/
+    rsync -uav utils/cJSON/libcjson.so.1 factory-installer/
+    rsync -uav utils/curl/lib/libcurl-d.so.4 factory-installer/
+    rsync -uav utils/openssl/libcrypto.so.1.1 factory-installer/
+    rsync -uav utils/zlib/libz.so.1 factory-installer/
+    rsync -uav utils/openssl/libssl.so.1.1 factory-installer/
+    cp app-factory-installer factory-installer/
+    cp ../config.json factory-installer/
+    zip factory-installer.zip factory-installer/*
+    rm -fr factory-installer
+}
+
 function main(){
     local target=""
     parseArgs $@
@@ -36,6 +67,8 @@ function main(){
         rsync -uav utils/openssl/libcrypto.so* .
         rsync -uav utils/openssl/libssl.so* .
         rsync -uav lib/libssh.so* .
+        packageForUbuntu
+        popd
     elif [ "$target" == "mingw" ]; then #host linux, target windows
         local builddir="$(pwd)/mingw-build/utils"
         mkdir -p mingw-build
@@ -62,7 +95,6 @@ function main(){
             -DHAVE_COMPILER__FUNCTION__=1 \
             -DHAVE_GETADDRINFO=1 \
             -DENABLE_CUSTOM_COMPILER_FLAGS=OFF \
-            -DBUILD_SHARED_LIBS=OFF \
             -DBUILD_CLAR=OFF \
             -DTHREADSAFE=ON \
             -DCMAKE_SYSTEM_NAME=Windows \
@@ -81,8 +113,6 @@ function main(){
         # do this if on Windows: 
         #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
-        rm -f vcruntime140.dll
-        rm -f vcruntime140_1.dll
         cp -f utils/zlib/libzlib1.dll libzlib.dll 
         cp -f utils/openssl/libcrypto-1_1-x64.dll .
         cp -f utils/openssl/libssl-1_1-x64.dll .
@@ -90,16 +120,7 @@ function main(){
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
         cp -f ../utils/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
         cp -f ../utils/wpython/*.dll .
-
-        mkdir -p factory-installer
-        rm -fr factory-installer/*
-        cp *dll factory-installer/
-        cp ../config.json factory-installer/
-        cp app-factory-installer.exe factory-installer/
-        rm -f factory-installer.zip
-        zip factory-installer.zip factory-installer/*
-        rm -fr factory-installer
-
+        packageForWindows
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
         mkdir -p msys-build
