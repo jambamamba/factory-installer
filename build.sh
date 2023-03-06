@@ -114,6 +114,9 @@ function main(){
         #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
         cp -f utils/zlib/libzlib1.dll libzlib.dll 
+        cp -f utils/libssh/src/libssh.dll .
+        cp -f utils/cJSON/libcjson.dll .
+        cp -f utils/curl/lib/libcurl-d.dll .
         cp -f utils/openssl/libcrypto-1_1-x64.dll .
         cp -f utils/openssl/libssl-1_1-x64.dll .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
