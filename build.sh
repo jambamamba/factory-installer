@@ -116,7 +116,7 @@ function main(){
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
-        cp -f utils/zlib/libzlib1.dll libzlib.dll 
+        cp -f utils/zlib/libzlib1.dll .
         cp -f utils/libssh/src/libssh.dll .
         cp -f utils/cJSON/libcjson.dll .
         cp -f utils/curl/lib/libcurl-d.dll .
