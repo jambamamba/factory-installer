@@ -40,11 +40,11 @@ set (INC_DIRS
    ${PROJECT_SOURCE_DIR}/.. 
    ${CMAKE_SOURCE_DIR}/utils
    ${CMAKE_SOURCE_DIR}/lvgl-libraries/
-   ${THIRD_PARTY_LIB_DIR}
-   )
+   ${CMAKE_BINARY_DIR}/utils/cpython/
+   ${CMAKE_BINARY_DIR}/utils/cpython/include/
+  )
 if (MINGW)
    set (INC_DIRS ${INC_DIRS} 
-      ${CMAKE_SOURCE_DIR}/utils/wpython/include
       ${CMAKE_SOURCE_DIR}/utils/SDL2-2.26.3/x86_64-w64-mingw32/include
       )
 endif()
@@ -69,17 +69,18 @@ set(LINK_DIRECTORIES
    ${CMAKE_BINARY_DIR}
    ${OPENSSL_LIBRARY_DIR}
    ${ZLIB_ROOT}
+   ${CMAKE_BINARY_DIR}/utils/cpython/
 )
+
 if (MINGW)
    set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
       /mingw64/bin/ 
-      ${CMAKE_SOURCE_DIR}/utils/wpython 
       ${CMAKE_SOURCE_DIR}/utils/SDL2-2.26.3/x86_64-w64-mingw32/bin
       )
 else()
-   set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
-      ${CMAKE_SOURCE_DIR}/utils/cpython/build/x86-build
-      )
+   # set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
+   #    ${CMAKE_SOURCE_DIR}/utils/cpython/build/x86-build
+   #    )
 endif()
 
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")

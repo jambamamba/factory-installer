@@ -27,7 +27,7 @@ function packageForUbuntu(){
     mkdir -p factory-installer
     rm -fr factory-installer/*
 
-    rsync -uav utils/cpython/build/x86-build/libpython3.12.so.1.0 factory-installer/
+    rsync -uav libpython*.so* factory-installer/
     rsync -uav libssh.so.4 factory-installer/
     rsync -uav utils/cJSON/libcjson.so.1 factory-installer/
     rsync -uav utils/curl/lib/libcurl-d.so.4 factory-installer/
@@ -64,6 +64,7 @@ function main(){
         ln -sf "../py/main.py" .
         ln -sf "../py/main.py" "/home/$USER/.local/share/app-factory-installer/main.py"
         rsync -uav utils/zlib/libz.so* .
+        rsync -uav utils/cpython/libpython*.so* .
         rsync -uav utils/openssl/libcrypto.so* .
         rsync -uav utils/openssl/libssl.so* .
         rsync -uav lib/libssh.so* .
@@ -121,8 +122,8 @@ function main(){
         cp -f utils/openssl/libssl-1_1-x64.dll .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
+        cp -f utils/cpython/*.dll .
         cp -f ../utils/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
-        cp -f ../utils/wpython/*.dll .
         packageForWindows
         popd
     elif [ "$target" == "msys" ]; then #host windows, target windows
