@@ -28,12 +28,12 @@ function packageForUbuntu(){
     rm -fr factory-installer/*
 
     rsync -uav libpython*.so* factory-installer/
-    rsync -uav libssh.so.4 factory-installer/
-    rsync -uav utils/cJSON/libcjson.so.1 factory-installer/
-    rsync -uav utils/curl/lib/libcurl-d.so.4 factory-installer/
-    rsync -uav utils/openssl/libcrypto.so.1.1 factory-installer/
-    rsync -uav utils/zlib/libz.so.1 factory-installer/
-    rsync -uav utils/openssl/libssl.so.1.1 factory-installer/
+    rsync -uav libssh.so* factory-installer/
+    rsync -uav utils/cJSON/libcjson.so* factory-installer/
+    rsync -uav utils/curl/lib/libcurl-d.so* factory-installer/
+    rsync -uav utils/openssl/libcrypto.so* factory-installer/
+    rsync -uav utils/zlib/libz.so* factory-installer/
+    rsync -uav utils/openssl/libssl.so* factory-installer/
     cp app-factory-installer factory-installer/
     cp ../config.json factory-installer/
     zip factory-installer.zip factory-installer/*
@@ -114,14 +114,14 @@ function main(){
         # do this if on Windows: 
         #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
+        cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
+        cp -f /usr/x86_64-w64-mingw32/lib/*dll .
         cp -f utils/zlib/libzlib1.dll libzlib.dll 
         cp -f utils/libssh/src/libssh.dll .
         cp -f utils/cJSON/libcjson.dll .
         cp -f utils/curl/lib/libcurl-d.dll .
         cp -f utils/openssl/libcrypto-1_1-x64.dll .
         cp -f utils/openssl/libssl-1_1-x64.dll .
-        cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
-        cp -f /usr/x86_64-w64-mingw32/lib/*dll .
         cp -f utils/cpython/*.dll .
         cp -f ../utils/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
         packageForWindows
