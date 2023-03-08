@@ -73,7 +73,7 @@ updateSerialNumberInJson(const std::string &local_serialnum_file, const std::str
   return true;
 }
 
-static long _download_percent = 0;
+static float _download_percent = 0;
 static std::string _status_msg;
 static SshStateE _state = SshState_None;
 
@@ -365,7 +365,7 @@ static void downloadWic(){
         else if(content_length > 0 && bytes_written <= content_length){
           char percent[128] = {0};
           _download_percent = bytes_written * 100. / content_length;
-          snprintf(percent, sizeof(percent)-1, "%i%%", _download_percent);
+          snprintf(percent, sizeof(percent)-1, "%.02i%%", _download_percent);
           msg = "Downloaded ";
           msg += percent;
         }
