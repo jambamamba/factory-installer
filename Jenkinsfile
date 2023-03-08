@@ -6,7 +6,7 @@
 stashes = []
 
 def String destinationBranch(env) {
-    return (env.CHANGE_TARGET != null) ? env.CHANGE_TARGET : "master"
+    return (env.CHANGE_TARGET != null) ? env.CHANGE_TARGET : "main"
 }
 
 def String sourceBranch(env) {
@@ -25,7 +25,7 @@ def String getGitBranchName(scm, env) {
 pipeline {
     agent none
     stages {
-        stage('x86-arm') {
+        stage('mingw') {
             environment {
                 USER = "${env.USER}"
                 BUILD_NUMBER = "${env.BUILD_NUMBER}"
@@ -36,7 +36,7 @@ pipeline {
             agent { node { label 'linux' } }
             options { skipDefaultCheckout true }
             steps {
-                dir('scm.lvgl.' + "${env.BUILD_NUMBER}"){
+                dir('scm.factory-installer.' + "${env.BUILD_NUMBER}"){
                     checkout scm
                      script {
                         statusCode = sh  script:"""#!/bin/bash
@@ -44,7 +44,7 @@ pipeline {
                         git checkout "\${CURRENT_BRANCH}"
                         git submodule update --recursive --init
                         project_path=\$(echo "\$PWD" | sed -r "s|\$JENKINS_HOME|\$HOST_JENKINS_HOME|")
-                        ./enter-docker.sh build_number="${env.BUILD_NUMBER}" job_name="${env.JOB_NAME}" project_path="\${project_path}" 
+                        ./enter-docker.sh build_number="${env.BUILD_NUMBER}" job_name="${env.JOB_NAME}" project_path="\${project_path} target=mingw" 
                         """, returnStatus:true
 
                         if (statusCode != 0) {
@@ -52,12 +52,12 @@ pipeline {
                             error "Failed to build"
                         }
                         else {
-                            archiveArtifacts artifacts: "out/*.tar.xz", fingerprint: true
+                            archiveArtifacts artifacts: "mingw-build/*zip", fingerprint: true
                         }
                     }//script
                 }//dir
             }//steps
-        }//'x86-arm'
+        }//'mingw'
      }//stages
 }//pipeline
 
