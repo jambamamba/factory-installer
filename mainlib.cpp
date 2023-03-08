@@ -365,7 +365,7 @@ static void downloadWic(){
         else if(content_length > 0 && bytes_written <= content_length){
           char percent[128] = {0};
           _download_percent = bytes_written * 100. / content_length;
-          snprintf(percent, sizeof(percent)-1, "%.02i%%", _download_percent);
+          snprintf(percent, sizeof(percent)-1, "%.02f%%", _download_percent);
           msg = "Downloaded ";
           msg += percent;
         }
