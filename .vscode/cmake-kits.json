@@ -18,5 +18,15 @@
       "C": "/bin/clang",
       "CXX": "/usr/bin/clang++"
     }
+  },
+  {
+    "name": "mingw-build",
+    "environmentVariables": {
+      "SDK_DIR": "/opt/usr_data/sdk"
+    },
+    "compilers": {
+      "C": "/usr/bin/x86_64-w64-mingw32-gcc-posix",
+      "CXX": "/usr/bin/x86_64-w64-mingw32-g++-posix"
+    }
   }
 ]

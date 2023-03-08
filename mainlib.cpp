@@ -342,25 +342,7 @@ static PythonWrapper loadPython(int argc, char** argv)
   return py;
 }
 
-}//namespace
-
-////////////////////////////////////////////////////////////////////////
-extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
-  PROGRAM_INIT(argv[0], SDL_GetPrefPath("", APP_NAME));
-  LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
-
-  PythonWrapper py = loadPython(argc, argv);
-
-  initRenderingEngineSDL(keypressEvent, windowEventCallback);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
-  lv_obj_t *screen = lv_obj_create(nullptr);
-  addTextBox();
-  addTextArea();
-  addStatusMessage();
-  addLoaderArc();
-  addProgressBar();
-
-//////////////////
-
+static void downloadWic(){
   // std::string url("https://10.57.3.4:8080/job/nextgen/job/master/lastSuccessfulBuild/artifact/out/steno-docker-image%3Av21.tar.gz");
   // std::string url("https://10.57.3.4/wiki/images/1/13/01-new-developer-setup-download-virtual-box.mp4");
   finishTasks();
@@ -393,8 +375,25 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
     // _status_msg = "";
     // _state = SshState_None;
   });
+}
+}//namespace
 
-//////////////////
+////////////////////////////////////////////////////////////////////////
+extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
+  PROGRAM_INIT(argv[0], SDL_GetPrefPath("", APP_NAME));
+  LOG(DEBUG, MAIN, "FactoryInstallerEntryPoint\n");  
+
+  PythonWrapper py = loadPython(argc, argv);
+
+  initRenderingEngineSDL(keypressEvent, windowEventCallback);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
+  lv_obj_t *screen = lv_obj_create(nullptr);
+  addTextBox();
+  addTextArea();
+  addStatusMessage();
+  addLoaderArc();
+  addProgressBar();
+  downloadWic();
+
   if(!py.pythonCallMain([&py](){
     eventLoop(py, -1);
   })){
