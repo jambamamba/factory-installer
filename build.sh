@@ -42,6 +42,8 @@ function packageForUbuntu(){
 
 function main(){
     local target=""
+    # local artifacts_url="https://10.57.3.4/artifacts"
+    local artifacts_url="/home/oosman/Downloads"
     parseArgs $@
 
     if [ "$target" == "x86" ]; then #host linux, target linux
@@ -51,7 +53,7 @@ function main(){
             rm -fr x86-build/*
         fi
         pushd utils
-        ./install-libs.sh target="$target" builddir="${builddir}" clean="$clean"
+        ./install-libs.sh target="$target" builddir="${builddir}" clean="$clean" artifacts_url="$artifacts_url"
         popd
         pushd x86-build
         cmake -DCMAKE_BUILD_TYPE=Debug \
@@ -78,7 +80,7 @@ function main(){
         fi
         pushd utils
         source ./toolchains/x86_64-w64-mingw32.sh
-        ./install-libs.sh target="$target" builddir="${builddir}" clean="$clean"
+        ./install-libs.sh target="$target" builddir="${builddir}" clean="$clean" artifacts_url="$artifacts_url"
         popd
         pushd mingw-build
         cmake -DCMAKE_TOOLCHAIN_FILE=$(pwd)/../utils/toolchains/x86_64-w64-mingw32.cmake \
