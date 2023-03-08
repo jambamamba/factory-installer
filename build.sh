@@ -111,9 +111,7 @@ function main(){
             -G "Ninja" ..
         ninja --verbose
         ln -sf "../config.json" .
-        ln -sf "../config.json" "/home/$USER/.local/share/app-factory-installer/config.json"
         ln -sf "../py/main.py" .
-        ln -sf "../py/main.py" "/home/$USER/.local/share/app-factory-installer/main.py"
         # do this if on Windows: 
         #  cp ../config.json /c/Users/oosman/AppData/Roaming/app-factory-installer/
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
