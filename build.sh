@@ -61,10 +61,11 @@ function main(){
             -DCMAKE_PREFIX_PATH=$(pwd)/../utils/cmake-modules \
             -G Ninja ..
         ninja --verbose
-        ln -sf "../config.json" .
+        mkdir -p "/home/$USER/.local/share/app-factory-installer"
         ln -sf "../config.json" "/home/$USER/.local/share/app-factory-installer/config.json"
-        ln -sf "../py/main.py" .
         ln -sf "../py/main.py" "/home/$USER/.local/share/app-factory-installer/main.py"
+        ln -sf "../config.json" .
+        ln -sf "../py/main.py" .
         rsync -uav utils/zlib/libz.so* .
         rsync -uav utils/cpython/libpython*.so* .
         rsync -uav utils/openssl/libcrypto.so* .
