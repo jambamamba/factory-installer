@@ -28,12 +28,8 @@ function packageForUbuntu(){
     rm -fr factory-installer/*
 
     rsync -uav libpython*.so* factory-installer/
-    rsync -uav libssh.so* factory-installer/
-    rsync -uav utils/cJSON/libcjson.so* factory-installer/
-    rsync -uav utils/curl/lib/libcurl-d.so* factory-installer/
-    rsync -uav utils/openssl/libcrypto.so* factory-installer/
-    rsync -uav utils/zlib/libz.so* factory-installer/
-    rsync -uav utils/openssl/libssl.so* factory-installer/
+
+    rsync -uav lib*.so* factory-installer/
     cp app-factory-installer factory-installer/
     cp ../config.json factory-installer/
     zip factory-installer.zip factory-installer/*
@@ -70,6 +66,7 @@ function main(){
         rsync -uav utils/cpython/libpython*.so* .
         rsync -uav utils/openssl/libcrypto.so* .
         rsync -uav utils/openssl/libssl.so* .
+        rsync -uav utils/libgzstream.so* .
         rsync -uav lib/libssh.so* .
         packageForUbuntu
         popd
@@ -124,6 +121,7 @@ function main(){
         cp -f utils/openssl/libcrypto-1_1-x64.dll .
         cp -f utils/openssl/libssl-1_1-x64.dll .
         cp -f utils/cpython/*.dll .
+        cp -f utils/libgzstream.dll .
         cp -f ../utils/SDL2-2.26.3/x86_64-w64-mingw32/bin/SDL2.dll .
         packageForWindows
         popd

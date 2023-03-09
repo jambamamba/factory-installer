@@ -349,7 +349,12 @@ static void downloadWic(){
   _task_curldownload = std::thread([](){
     CurlHelper curl_helper(loadJsonConfig(configPath("config.json")));
     _state = SshState_DownloadingPayload;
-    curl_helper.startSession([](long curl_result, long http_status_code, ssize_t bytes_written, ssize_t content_length, const std::string &errmsg){
+    curl_helper.startSession([](
+      long curl_result, 
+      long http_status_code, 
+      ssize_t bytes_written, 
+      ssize_t content_length, 
+      const std::string &errmsg){
       // if(curl_result == CURLE_OK){
         std::string msg;
         if((curl_result > 0 || errmsg.size())
