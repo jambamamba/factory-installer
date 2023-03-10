@@ -1,5 +1,6 @@
 {
    "version": "1.0",
+   "language": "english",
    "device": { 
       "ip": "192.168.7.2",
       "port": "22",

@@ -20,25 +20,11 @@ sdlKeyboardReadOverride(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
   }
 }
 
-uint32_t 
-custom_tick_get(void)
-{
-  static uint64_t start_ms = 0;
-  if (start_ms == 0)
-  {
-    struct timeval tv_start;
-    gettimeofday(&tv_start, NULL);
-    start_ms = (tv_start.tv_sec * 1000000 + tv_start.tv_usec) / 1000;
-  }
-
-  struct timeval tv_now;
-  gettimeofday(&tv_now, NULL);
-  uint64_t now_ms;
-  now_ms = (tv_now.tv_sec * 1000000 + tv_now.tv_usec) / 1000;
-
-  uint32_t time_ms = now_ms - start_ms;
-  return time_ms;
+void 
+defaultMouseReadHandler(struct _lv_indev_drv_t * indev_drv, lv_indev_data_t * data){
+  sdl_mouse_read(indev_drv, data);
 }
+
 
 /**
  * A task to measure the elapsed time for LVGL
@@ -123,7 +109,8 @@ initRenderingEngineSDL(KeypressCallback keypress_cb, WindowEventCallback window_
   indev_drv_1.type = LV_INDEV_TYPE_POINTER;
 
   /*This function will be called periodically (by the library) to get the mouse position and state*/
-  indev_drv_1.read_cb = sdl_mouse_read;
+  extern void mouseReadOverride(struct _lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
+  indev_drv_1.read_cb = mouseReadOverride;//sdl_mouse_read;
   lv_indev_t *mouse_indev = lv_indev_drv_register(&indev_drv_1);
 #endif
 #if 0

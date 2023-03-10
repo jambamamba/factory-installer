@@ -117,7 +117,7 @@ function main(){
         cp -f utils/zlib/libzlib1.dll .
         cp -f utils/libssh/src/libssh.dll .
         cp -f utils/cJSON/libcjson.dll .
-        cp -f utils/curl/lib/libcurl-d.dll .
+        cp -f utils/curl/lib/libcurl.dll .
         cp -f utils/openssl/libcrypto-1_1-x64.dll .
         cp -f utils/openssl/libssl-1_1-x64.dll .
         cp -f utils/cpython/*.dll .

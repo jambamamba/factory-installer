@@ -26,6 +26,7 @@
 #include "python_wrapper.h"
 #include "my_device.h"
 #include "curl_helper.h"
+#include "ui/screen_manager.h"
 
 LOG_CATEGORY(MAIN, "MAIN")
 
@@ -77,33 +78,6 @@ static float _download_percent = 0;
 static std::string _status_msg;
 static SshStateE _state = SshState_None;
 
-static std::string configPath(const std::string &filename)
-{
-    std::string path = SDL_GetPrefPath("", FileUtils::getProgramName().c_str());
-    if(path.size()){
-      LOG(DEBUG, MAIN, "configPath, 1-trying path %s\n", path.c_str());  
-      if(FileUtils::fileExists(std::string(path + filename))){
-        return FileUtils::toLinuxPathSeparators(path + filename);
-      }
-    }
-
-    path = FileUtils::getProgramPath();
-    if(path.size()){
-      LOG(DEBUG, MAIN, "configPath, 2-trying path %s\n", (path + "/config.json").c_str());  
-      if(FileUtils::fileExists(path + "/config.json")){
-        return FileUtils::toLinuxPathSeparators(path + "/config.json");
-      }
-    }
-
-    LOG(DEBUG, MAIN, "configPath, 3-trying path %s\n", filename.c_str());  
-    if(FileUtils::fileExists(filename)){
-      return filename;
-    }
-
-    LOG(FATAL, MAIN, "configPath, exhausted all options\n");  
-    return "";
-}
-
 
 static cJSON*  
 loadJsonConfig(const std::string &config){
@@ -121,7 +95,7 @@ static void
 setDeviceSerialNum(const char *serialnum){
   finishTasks();
   _task_serialnum = std::thread([serialnum](){
-    MyDevice device(loadJsonConfig(configPath("config.json")), [](){
+    MyDevice device(loadJsonConfig(FileUtils::configPath("config.json")), [](){
       return !_die;
     });
     std::string workdir(SDL_GetPrefPath("", APP_NAME));
@@ -319,7 +293,7 @@ eventLoop(PythonWrapper &py, int loop_count)
 static PythonWrapper loadPython(int argc, char** argv)
 {
   PythonWrapper py;
-  if(py.pythonInit(argc, argv, configPath("py/main.py").c_str())){
+  if(py.pythonInit(argc, argv, FileUtils::configPath("py/main.py").c_str())){
     // py.registerTouchWidgetProcs(
     //   [](const char* widget_id){
     //     // ScreenManager::getScreenManager()->loadScreenById(widget_id);
@@ -347,7 +321,7 @@ static void downloadWic(){
   // std::string url("https://10.57.3.4/wiki/images/1/13/01-new-developer-setup-download-virtual-box.mp4");
   finishTasks();
   _task_curldownload = std::thread([](){
-    CurlHelper curl_helper(loadJsonConfig(configPath("config.json")));
+    CurlHelper curl_helper(loadJsonConfig(FileUtils::configPath("config.json")));
     _state = SshState_DownloadingPayload;
     curl_helper.startSession([](
       long curl_result, 
@@ -391,6 +365,9 @@ extern "C" int FactoryInstallerEntryPoint(int argc, char** argv){
   PythonWrapper py = loadPython(argc, argv);
 
   initRenderingEngineSDL(keypressEvent, windowEventCallback);//wayland_init1(); or framebuffer init or sdl, we want to use sdl for x86
+
+  // ScreenManager::getScreenManager()->loadScreen(lv_scr_act(), OPENING_MENU1);
+
   lv_obj_t *screen = lv_obj_create(nullptr);
   addTextBox();
   addTextArea();

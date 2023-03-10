@@ -9,20 +9,30 @@
 
 cmake_minimum_required(VERSION 3.10)
 set (project "factory-installer")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+##############################
+set (USE_SDL 1)
+set (USE_MONITOR 0)
+set (MONITOR_HOR_RES 800)
+set (MONITOR_VER_RES 480)
+add_compile_definitions(USE_SDL=1)
+##############################
+# set_property(TARGET "app-${project}" PROPERTY CXX_STANDARD 20)
+# set_property(TARGET ${project} PROPERTY CXX_STANDARD 20)
 project(${project})
 
-set(CMAKE_BUILD_TYPE "Debug")
 option(WITH_EXAMPLES "" OFF)
-
-add_compile_definitions(APP_NAME="${project}")
-if (MINGW)
-   find_package(SDL2 REQUIRED)
-endif()
-add_subdirectory(lvgl-libraries)
+add_compile_definitions(
+   APP_NAME="${project}"
+   MONITOR_HOR_RES=${MONITOR_HOR_RES}
+   MONITOR_VER_RES=${MONITOR_VER_RES}
+)
 add_subdirectory(utils)
 
 if (MINGW)
-   add_compile_definitions(DATA_DIR="c:/repos/factory-installer")
+   add_compile_definitions(DATA_DIR="c:/repos/factory-installer" MINGW=1)
 else()
    add_compile_definitions(DATA_DIR="/home/oosman/repos/factory-installer")
 endif()
@@ -39,7 +49,7 @@ set (INC_DIRS
    ${PROJECT_SOURCE_DIR}
    ${PROJECT_SOURCE_DIR}/.. 
    ${CMAKE_SOURCE_DIR}/utils
-   ${CMAKE_SOURCE_DIR}/lvgl-libraries/
+   ${CMAKE_SOURCE_DIR}/utils/lvgl-libraries/
    ${CMAKE_BINARY_DIR}/utils/cpython/
    ${CMAKE_BINARY_DIR}/utils/cpython/include/
   )
@@ -73,9 +83,10 @@ set(LINK_DIRECTORIES
 )
 
 if (MINGW)
-   set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
+   set (LINK_DIRECTORIES 
+      ${LINK_DIRECTORIES} 
+      ${SDL2_LIB_DIR}
       /mingw64/bin/ 
-      ${CMAKE_SOURCE_DIR}/utils/SDL2-2.26.3/x86_64-w64-mingw32/bin
       )
 else()
    # set (LINK_DIRECTORIES ${LINK_DIRECTORIES} 
@@ -86,25 +97,17 @@ endif()
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
    set (INC_DIRS 
       ${INC_DIRS}
-      /usr/include/SDL2/
-      ${SDL_INCLUDE_DIR}
-   )
-   set (LIBS
-      ${LIBS}
-      SDL2
-   )
-   set(LINK_DIRECTORIES
-      ${LINK_DIRECTORIES}
-      ${SDL_LIB_DIR}
-   )
-   set (COMPILE_DEFINITIONS 
-      ${COMPILE_DEFINITIONS} 
-      USE_SDL=1
-      USE_MONITOR=1 
-      MONITOR_HOR_RES=800 
-      MONITOR_VER_RES=480
+      ${SDL2_INCLUDE_DIRS}
    )
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")  
+endif()
+
+if(USE_SDL)
+   find_package(SDL2 REQUIRED SDL2)
+   set(LIBS
+    ${LIBS}
+    SDL2::SDL2
+    )
 endif()
 
 ##############################
@@ -125,4 +128,3 @@ target_compile_definitions("app-${project}" PRIVATE ${COMPILE_DEFINITIONS})
 target_compile_options("app-${project}" PRIVATE -mwindows) 
 target_link_options("app-${project}" PRIVATE -mwindows)
 #set_target_properties("app-${project}" PROPERTIES WIN32_EXECUTABLE FALSE)
-
