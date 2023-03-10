@@ -63,6 +63,7 @@ function main(){
         ln -sf "../config.json" .
         ln -sf "../py/main.py" .
         rsync -uav utils/zlib/libz.so* .
+        rsync -uav utils/lvgl-libraries/liblvgl*.so* .
         rsync -uav utils/cpython/libpython*.so* .
         rsync -uav utils/openssl/libcrypto.so* .
         rsync -uav utils/openssl/libssl.so* .
@@ -114,6 +115,7 @@ function main(){
         #  cp ../py/main.py /c/Users/oosman/AppData/Roaming/app-factory-installer/
         cp -f /usr/x86_64-w64-mingw32/lib/*dll.a .
         cp -f /usr/x86_64-w64-mingw32/lib/*dll .
+        cp -f utils/lvgl-libraries/liblvgl.dll .
         cp -f utils/zlib/libzlib1.dll .
         cp -f utils/libssh/src/libssh.dll .
         cp -f utils/cJSON/libcjson.dll .
